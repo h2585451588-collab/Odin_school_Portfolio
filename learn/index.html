@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1f4e70">
+  <meta name="description" content="Learn — a classroom tabletop roleplaying game in which teachers and students co-create a classroom through inquiry, presentation, and shared rewards.">
+  <title>Learn — A Classroom Tabletop Roleplaying Game</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f4e70'/%3E%3Cpath d='M17 17h22a8 8 0 0 1 8 8v25H25a8 8 0 0 1-8-8V17Z' fill='none' stroke='%23fff' stroke-width='4'/%3E%3Cpath d='M27 29h14M27 38h10' stroke='%23d2a85f' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --navy: #1f4e70;
+      --navy-dark: #17374d;
+      --gold: #c79a4b;
+      --ink: #24282b;
+      --muted: #5b6267;
+      --paper: #ffffff;
+      --soft: #f3f5f6;
+      --blue-soft: #e9f0f4;
+      --line: rgba(36, 40, 43, .2);
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: "Arial Nova", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { background: #e5e7e8; scroll-behavior: smooth; }
+    body { margin: 0; min-width: 320px; color: var(--ink); background: #e5e7e8; font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+    p { line-height: 1.62; }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      min-height: 4.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: .8rem clamp(1rem, 3vw, 3rem);
+      color: #fff;
+      background: rgba(31, 78, 112, .96);
+      backdrop-filter: blur(12px);
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .back { display: inline-flex; align-items: center; gap: .7rem; text-decoration: none; white-space: nowrap; }
+    .back span { font-size: 1.05rem; transition: transform .25s ease; }
+    .back:hover span { transform: translateX(-.25rem); }
+    .section-nav { display: flex; align-items: center; gap: clamp(1rem, 2.4vw, 2.5rem); }
+    .section-nav a { color: rgba(255,255,255,.68); text-decoration: none; }
+    .section-nav a:hover { color: #fff; }
+
+    .report { width: min(74rem, calc(100% - 2rem)); margin: 1rem auto 5rem; background: var(--paper); border: 1px solid #d4d7d8; box-shadow: 0 1.2rem 4rem rgba(24,28,30,.1); }
+    .section { position: relative; padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 7vw, 7rem); overflow: hidden; border-top: 1px solid #d8dcde; }
+    .chapter { margin: 0 0 1.2rem; color: var(--navy); font-size: .69rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
+    .display { margin: 0; font-family: var(--serif); font-weight: 400; letter-spacing: -.055em; line-height: .9; }
+
+    .hero { min-height: 50rem; display: grid; grid-template-columns: 1.08fr .92fr; gap: clamp(2.5rem, 7vw, 7rem); padding: clamp(3rem, 7vw, 7rem); background: linear-gradient(90deg, var(--navy) 0 .72rem, #fff .72rem 100%); border-top: 0; }
+    .hero-copy { display: flex; flex-direction: column; justify-content: space-between; }
+    h1 { max-width: 8ch; margin: 2rem 0; font-family: var(--serif); font-size: clamp(4.5rem, 10vw, 9rem); font-weight: 400; letter-spacing: -.075em; line-height: .78; }
+    .subtitle { max-width: 28rem; margin: 0 0 2.5rem; color: var(--navy); font-size: .74rem; font-weight: 800; letter-spacing: .13em; line-height: 1.5; text-transform: uppercase; }
+    .hero-intro { max-width: 38rem; margin: 0; color: var(--muted); font-family: var(--serif); font-size: clamp(1.2rem, 2vw, 1.6rem); line-height: 1.5; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 2.3rem; }
+    .hero-meta span { padding: .6rem .78rem; color: var(--navy); border: 1px solid rgba(31,78,112,.28); border-radius: 99rem; background: #f7fafb; font-size: .65rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+
+    .art-placeholder { position: relative; min-height: 30rem; display: grid; place-items: center; overflow: hidden; color: #727a7e; border: 1px solid currentColor; background: #f7f8f8; }
+    .art-placeholder::before, .art-placeholder::after { content: ""; position: absolute; background: currentColor; opacity: .16; }
+    .art-placeholder::before { width: 1px; height: 100%; }
+    .art-placeholder::after { width: 100%; height: 1px; }
+    .placeholder-label { position: relative; z-index: 1; padding: .8rem 1rem; background: inherit; font-size: .67rem; font-weight: 800; letter-spacing: .13em; line-height: 1.55; text-align: center; text-transform: uppercase; }
+    .placeholder-corner { position: absolute; right: 1rem; bottom: 1rem; font-size: .6rem; letter-spacing: .1em; text-transform: uppercase; opacity: .55; }
+    .hero-art { align-self: stretch; }
+
+    .overview { display: grid; grid-template-columns: .78fr 1.22fr; gap: clamp(3rem, 8vw, 8rem); background: var(--paper); }
+    .overview h2 { font-size: clamp(3.4rem, 7vw, 6.8rem); }
+    .overview-copy { align-self: end; }
+    .overview-copy > p { margin: 0 0 1.5rem; font-family: var(--serif); font-size: clamp(1.2rem, 1.9vw, 1.55rem); }
+    .overview-copy strong { color: var(--navy); }
+    .facts { display: grid; grid-template-columns: repeat(2,1fr); margin-top: 3rem; border-top: 1px solid var(--line); }
+    .fact { padding: 1.2rem 1.4rem 1.4rem 0; border-bottom: 1px solid var(--line); }
+    .fact:nth-child(even) { padding-left: 1.4rem; border-left: 1px solid var(--line); }
+    .fact small { display: block; margin-bottom: .5rem; color: var(--navy); font-size: .63rem; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+    .fact strong { font-family: var(--serif); font-size: 1.08rem; font-weight: 400; }
+
+    .roles { background: var(--blue-soft); }
+    .roles-head { display: grid; grid-template-columns: 1fr .82fr; gap: 4rem; align-items: end; margin-bottom: 5rem; }
+    .roles h2, .setup h2, .gameplay h2, .rewards h2, .intentions h2 { font-size: clamp(3.6rem, 7.5vw, 7.2rem); }
+    .roles-head > p { margin: 0; color: var(--muted); }
+    .role-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .role { min-height: 31rem; padding: clamp(2rem, 5vw, 4rem); background: var(--paper); }
+    .role-no { color: var(--gold); font-size: .72rem; font-weight: 800; }
+    .role h3 { margin: 4rem 0 1.3rem; font-family: var(--serif); font-size: clamp(2.7rem, 5vw, 4.8rem); font-weight: 400; letter-spacing: -.05em; }
+    .role > p { color: var(--muted); }
+    .responsibilities { margin: 2.2rem 0 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+    .responsibilities li { padding: .8rem 0; border-bottom: 1px solid var(--line); }
+
+    .full-art { padding: clamp(1rem, 2vw, 2rem); background: #eef1f2; }
+    .full-art .art-placeholder { min-height: min(62vw, 47rem); background: #fff; }
+
+    .setup { background: var(--paper); }
+    .setup-intro { max-width: 39rem; margin: 2rem 0 5rem; color: var(--muted); font-family: var(--serif); font-size: 1.3rem; }
+    .setup-grid { display: grid; grid-template-columns: 1fr 1fr; border-top: 2px solid var(--navy); }
+    .setup-item { min-height: 14rem; padding: 1.8rem 2rem 2.4rem 0; border-bottom: 1px solid var(--line); }
+    .setup-item:nth-child(even) { padding-left: 2rem; border-left: 1px solid var(--line); }
+    .setup-item small { display: block; margin-bottom: 2.6rem; color: var(--navy); font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+    .setup-item h3 { margin: 0 0 .8rem; font-family: var(--serif); font-size: clamp(1.55rem, 2.7vw, 2.3rem); font-weight: 400; line-height: 1.1; }
+    .setup-item p { margin: 0; color: var(--muted); }
+
+    .principle { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(3rem, 8vw, 8rem); color: #fff; background: var(--navy); }
+    .principle h2 { font-size: clamp(3.4rem, 6.7vw, 6.4rem); }
+    .principle .chapter { color: #d9b776; }
+    .principle-copy { align-self: end; }
+    .principle-copy p { margin: 0; color: rgba(255,255,255,.78); font-family: var(--serif); font-size: clamp(1.25rem, 2vw, 1.6rem); }
+
+    .gameplay { background: var(--paper); }
+    .gameplay h2 { max-width: 9ch; margin-bottom: 5rem; }
+    .phase-list { border-top: 1px solid var(--line); }
+    .phase { display: grid; grid-template-columns: 5rem .78fr 1.22fr; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--line); }
+    .phase-no { color: var(--gold); font-size: .72rem; font-weight: 800; }
+    .phase h3 { margin: 0; font-family: var(--serif); font-size: clamp(1.7rem, 3vw, 2.6rem); font-weight: 400; }
+    .phase p { margin: 0; color: var(--muted); }
+    .phase ul { margin: .8rem 0 0; padding-left: 1.2rem; color: var(--muted); line-height: 1.55; }
+
+    .example { display: grid; grid-template-columns: .72fr 1.28fr; gap: clamp(3rem, 8vw, 8rem); background: var(--soft); border-left: .72rem solid var(--navy); }
+    .example h2 { font-size: clamp(3.2rem, 6vw, 5.8rem); }
+    .example blockquote { margin: 0; align-self: end; font-family: var(--serif); font-size: clamp(1.2rem, 2vw, 1.55rem); line-height: 1.55; }
+    .example cite { display: block; margin-top: 2rem; color: var(--navy); font-family: var(--sans); font-size: .67rem; font-style: normal; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+
+    .rewards { background: var(--blue-soft); }
+    .rewards-head { display: grid; grid-template-columns: 1fr .82fr; gap: 4rem; align-items: end; }
+    .rewards-head > p { margin: 0; color: var(--muted); }
+    .declarations { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; margin-top: 5rem; padding: 1px; background: var(--line); }
+    .declaration { min-height: 16rem; padding: 2rem; background: var(--paper); }
+    .declaration b { color: var(--gold); font-size: 2.6rem; }
+    .declaration h3 { margin: 3rem 0 .7rem; font-family: var(--serif); font-size: 1.65rem; font-weight: 400; }
+    .declaration p { margin: 0; color: var(--muted); }
+
+    .intentions { background: var(--paper); }
+    .intent-grid { display: grid; grid-template-columns: repeat(2,1fr); margin-top: 5rem; border-top: 1px solid var(--line); }
+    .intent { min-height: 16rem; padding: 2rem 2rem 2rem 0; border-bottom: 1px solid var(--line); }
+    .intent:nth-child(even) { padding-left: 2rem; border-left: 1px solid var(--line); }
+    .intent h3 { margin: 0 0 1rem; color: var(--navy); font-family: var(--serif); font-size: 1.8rem; font-weight: 400; }
+    .intent p { margin: 0; color: var(--muted); }
+
+    .process-art { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 1rem; background: #eef1f2; }
+    .process-art .art-placeholder { min-height: 32rem; background: #fff; }
+
+    .references { background: var(--soft); }
+    .references h2 { max-width: 12ch; margin-top: .7rem; font-size: clamp(2.5rem, 4vw, 4rem); letter-spacing: -.035em; }
+    .references-intro { max-width: 42rem; margin-top: 1.1rem; color: var(--muted); font-size: 1rem; line-height: 1.65; }
+    .reference-list { max-width: 58rem; margin: 2.8rem 0 0; padding: .35rem 1.6rem; list-style: none; counter-reset: refs; background: #fff; border: 1px solid var(--line); }
+    .reference-list li { counter-increment: refs; display: grid; grid-template-columns: 2.4rem 1fr; gap: 1rem; padding: 1.25rem 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: .9rem; line-height: 1.6; }
+    .reference-list li:last-child { border-bottom: 0; }
+    .reference-list li::before { content: "0" counter(refs); padding-top: .18rem; color: var(--navy); font-size: .66rem; font-weight: 800; letter-spacing: .08em; }
+    .reference-list a { color: inherit; text-decoration-color: rgba(10, 31, 61, .3); text-underline-offset: .2rem; }
+
+    .setting-section { background: var(--blue-soft); }
+    .setting-head { display: grid; grid-template-columns: minmax(16rem, .72fr) minmax(0, 1.28fr); gap: 2rem clamp(3rem, 7vw, 7rem); align-items: end; margin-bottom: 4rem; }
+    .setting-head h2, .gameplay-section > h2 { font-size: clamp(3.8rem, 7.5vw, 7.4rem); }
+    .setting-head p:last-child { max-width: 38rem; margin: 0; color: var(--muted); font-family: var(--serif); font-size: 1.25rem; }
+    .setting-section .role-grid { counter-reset: roles; }
+    .setting-section .role { counter-increment: roles; min-height: 25rem; display: flex; flex-direction: column; justify-content: space-between; }
+    .setting-section .role-no::before { content: "0" counter(roles) " · "; }
+    .setting-section .role h3 { margin: 2.5rem 0 1.5rem; }
+    .setting-section .role > p { max-width: 34rem; margin: 0; font-size: 1rem; line-height: 1.75; }
+
+    .gameplay-section { background: #fff; }
+    .gameplay-section > h2 { max-width: 10ch; margin-bottom: 4rem; color: var(--navy); }
+    .gameplay-section .phase-list { counter-reset: gameplay-phase; }
+    .gameplay-section .phase { counter-increment: gameplay-phase; grid-template-columns: 4rem minmax(13rem, .65fr) minmax(0, 1.35fr); gap: 1.5rem 2rem; padding: 2.2rem 0; }
+    .gameplay-section .phase-no::before { content: "0" counter(gameplay-phase); }
+    .gameplay-section .phase h3 { color: var(--ink); }
+    .gameplay-section .phase p { font-size: 1rem; line-height: 1.75; }
+    .gameplay-section .phase:nth-child(1) { border-top: .35rem solid var(--navy); }
+    .gameplay-section .phase:nth-child(2) { border-top: .35rem solid #7390a3; }
+    .gameplay-section .phase:nth-child(3) { border-top: .35rem solid var(--gold); }
+    .gameplay-section .phase:nth-child(4) { border-top: .35rem solid #6d8475; }
+
+    .references { background: #f0f2f3; }
+    .references .reference-list { box-shadow: 0 1rem 3rem rgba(30,45,55,.05); }
+
+    .end { min-height: 34rem; display: flex; flex-direction: column; justify-content: space-between; color: #fff; background: var(--navy); }
+    .end p { font-size: .68rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .end h2 { max-width: 10ch; font-size: clamp(4rem, 9vw, 8.3rem); }
+    .end a { align-self: flex-end; text-underline-offset: .35rem; }
+
+    @media (max-width: 900px) {
+      .section-nav { display: none; }
+      .hero, .overview, .principle, .example { grid-template-columns: 1fr; }
+      .hero { min-height: auto; }
+      .hero-art { min-height: 38rem; }
+      .roles-head, .rewards-head { grid-template-columns: 1fr; gap: 2rem; }
+      .phase { grid-template-columns: 4rem 1fr; }
+      .phase p, .phase ul { grid-column: 2; }
+      .setting-head { grid-template-columns: 1fr; }
+      .gameplay-section .phase { grid-template-columns: 3rem 1fr; }
+      .gameplay-section .phase p { grid-column: 2; }
+    }
+
+    @media (max-width: 650px) {
+      .report { width: 100%; margin: 0; border-left: 0; border-right: 0; }
+      .section { padding: 3.7rem 1.25rem; }
+      .topbar { min-height: 4rem; }
+      .topbar > span { display: none; }
+      .hero { padding: 3.5rem 1.25rem; background: linear-gradient(90deg, var(--navy) 0 .38rem, #fff .38rem 100%); }
+      h1 { font-size: clamp(4.4rem, 23vw, 7rem); }
+      .hero-art { min-height: 30rem; }
+      .facts, .role-grid, .setup-grid, .declarations, .intent-grid, .process-art { grid-template-columns: 1fr; }
+      .fact:nth-child(even), .setup-item:nth-child(even), .intent:nth-child(even) { padding-left: 0; border-left: 0; }
+      .role { min-height: auto; }
+      .setup-item, .setup-item:nth-child(even), .intent, .intent:nth-child(even) { min-height: auto; padding: 1.7rem 0 2rem; }
+      .phase { grid-template-columns: 2.7rem 1fr; gap: 1rem; }
+      .process-art .art-placeholder { min-height: 26rem; }
+      .end a { align-self: flex-start; }
+      .setting-head h2, .gameplay-section > h2 { font-size: clamp(3.2rem, 16vw, 5rem); }
+    }
+
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="../index.html#work"><span aria-hidden="true">←</span> All projects</a>
+    <nav class="section-nav" aria-label="Project sections"><a href="#setting">Setting</a><a href="#gameplay">Gameplay</a><a href="#references">References</a></nav>
+  </header>
+
+  <main class="report">
+    <section class="section hero">
+      <div class="hero-copy">
+        <div><p class="chapter">Game &amp; Learning Design Case Study · Project 02</p><h1>Learn</h1><p class="subtitle">A Classroom Tabletop Roleplaying Game</p></div>
+        <div><p class="hero-intro">In <strong>Learn</strong>, a classroom tabletop roleplaying game, players take on two different roles: one teacher and many students. Together, they learn and build their classroom collaboratively. The game has no specific winning condition. Instead, the goal is to create a classroom that everyone loves and to form a shared story as teacher and students.</p></div>
+      </div>
+      <div class="art-placeholder hero-art" aria-label="Learn cover illustration placeholder"><span class="placeholder-label">Cover illustration</span><span class="placeholder-corner">Suggested ratio · 4:5</span></div>
+    </section>
+
+    <section class="section setting-section" id="setting">
+      <div class="setting-head"><div><p class="chapter">I · Setting Up</p><h2 class="display">Setting Up</h2></div><p>There are two roles players can choose from:</p></div>
+      <div class="role-grid">
+        <article class="role"><span class="role-no">Teacher</span><h3>Teacher</h3><p>To play as the teacher, a player receives a deck of cards featuring different subjects. The teacher’s goal is to describe or introduce a subject to the student players, set a learning goal for the class, and create activities that allow students to explore the subject creatively.</p></article>
+        <article class="role"><span class="role-no">Student</span><h3>Student</h3><p>Each student creates a character sheet. Players give their character a unique name, personality, strengths, and behaviors. A student’s role is to follow their chosen character and complete the teacher’s activities in a way that fits who the character is. For example, if a student’s character loves art and the class topic is dogs and cats as human companions, they might create an artwork that expresses their thoughts on the topic.</p></article>
+      </div>
+    </section>
+
+    <section class="section full-art"><div class="art-placeholder" aria-label="Classroom system illustration placeholder"><span class="placeholder-label">Classroom system illustration</span><span class="placeholder-corner">Suggested ratio · 16:10</span></div></section>
+
+    <section class="section gameplay-section" id="gameplay">
+      <p class="chapter">II · Gameplay</p><h2 class="display">Gameplay</h2>
+      <div class="phase-list">
+        <article class="phase"><span class="phase-no" aria-hidden="true"></span><h3>Topic Release</h3><p>The teacher begins by introducing the topic for the turn. This could involve describing it, showing a picture, or asking students to explore how it appears in their own lives. There is no single correct way to do this; the teacher can be as creative as they like.</p></article>
+        <article class="phase"><span class="phase-no" aria-hidden="true"></span><h3>Student Research and Study</h3><p>During this phase, students take time to explore the topic. They might focus on what interests them, build on what they already know, or find related ideas that inspire them. It is okay if what they discover is not directly about the topic, as long as it connects in some way. Students can also ask the teacher questions. If the teacher does not know the answer, that is okay; they can research it together. After exploring, students decide how they want to present what they have learned and what interests them most.</p></article>
+        <article class="phase"><span class="phase-no" aria-hidden="true"></span><h3>Presenting</h3><p>Each student may present their work. If a student does not want to present, that is completely fine. The teacher should encourage them gently, but if they still prefer not to share, the group can show support and move on. After each presentation, the group discusses what they appreciated and gives a round of applause to recognize the effort.</p></article>
+        <article class="phase"><span class="phase-no" aria-hidden="true"></span><h3>Rewarding</h3><p>After everyone has had the opportunity to present, the group enters the Rewarding phase. Together, they create one or more declarations for the classroom: something symbolic or tangible that reflects the topic they just explored. A declaration can be anything, such as a pair of cozy chairs, a new bookshelf, or a class motto—anything that adds meaning or personality to the shared classroom space.</p></article>
+      </div>
+    </section>
+
+    <section class="section process-art"><div class="art-placeholder" aria-label="Subject deck and materials placeholder"><span class="placeholder-label">Subject deck / materials</span><span class="placeholder-corner">Suggested ratio · 4:5</span></div><div class="art-placeholder" aria-label="Playtest and classroom image placeholder"><span class="placeholder-label">Playtest / classroom image</span><span class="placeholder-corner">Suggested ratio · 4:5</span></div></section>
+
+    <section class="section references" id="references">
+      <p class="chapter">III · Research</p><h2 class="display">References</h2>
+      <p class="references-intro">Selected sources that informed the project’s approach to teaching, identity, and classroom participation.</p>
+      <ol class="reference-list"><li><span>Ayers, William. <em>To Teach: The Journey, in Comics.</em> Teachers College Press, 2010.</span></li><li><span><a href="https://www.ascd.org/el/articles/what-common-education-terms-need-to-go">“What Common Education Terms Need to Go?” ASCD.</a> Accessed April 30, 2025.</span></li><li><span><a href="https://www.learningforjustice.org/magazine/what-is-the-model-minority-myth">“What Is the Model Minority Myth?” Learning for Justice.</a> Accessed April 30, 2025.</span></li><li><span><a href="https://www.youtube.com/watch?v=m5aOnGdWr78">“The Fake Link Between Race and Intelligence.” AJ+.</a> Accessed April 30, 2025.</span></li></ol>
+    </section>
+
+    <section class="section end"><p>Learn</p><h2 class="display">Build the classroom together.</h2><a href="../index.html#work">Return to all projects →</a></section>
+  </main>
+</body>
+</html>

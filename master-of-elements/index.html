@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#18201d">
+  <meta name="description" content="Master of Elements — a collaborative coming-of-age role-playing game about elemental dance, friendship, identity, and peer learning.">
+  <title>Master of Elements — Game &amp; Learning Design</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2318201d'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='%23efe8d8' stroke-width='3'/%3E%3Ccircle cx='32' cy='14' r='4' fill='%23cb5541'/%3E%3Ccircle cx='49' cy='27' r='4' fill='%234a748d'/%3E%3Ccircle cx='42' cy='48' r='4' fill='%23816c4b'/%3E%3Ccircle cx='22' cy='48' r='4' fill='%235f8068'/%3E%3Ccircle cx='15' cy='27' r='4' fill='%23aaa89f'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --ink: #18201d;
+      --ink-soft: #35413b;
+      --paper: #efe8d8;
+      --paper-deep: #dfd5c1;
+      --paper-light: #f8f4ea;
+      --fire: #cb5541;
+      --water: #4a748d;
+      --earth: #816c4b;
+      --wood: #5f8068;
+      --metal: #8d908b;
+      --line: rgba(24, 32, 29, .24);
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: "Arial Nova", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--ink); scroll-behavior: smooth; }
+    body { margin: 0; min-width: 320px; color: var(--ink); background: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    p { line-height: 1.62; }
+    :focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      min-height: 4.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: .8rem clamp(1rem, 3vw, 3rem);
+      color: var(--paper);
+      background: rgba(24, 32, 29, .94);
+      border-bottom: 1px solid rgba(239, 232, 216, .2);
+      backdrop-filter: blur(12px);
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .back { display: inline-flex; align-items: center; gap: .7rem; text-decoration: none; white-space: nowrap; }
+    .back span { font-size: 1.05rem; transition: transform .25s ease; }
+    .back:hover span { transform: translateX(-.25rem); }
+    .section-nav { display: flex; align-items: center; gap: clamp(1rem, 2.4vw, 2.5rem); }
+    .section-nav a { color: rgba(239,232,216,.62); text-decoration: none; }
+    .section-nav a:hover { color: var(--paper); }
+
+    .folio { width: min(80rem, calc(100% - 2rem)); margin: 1rem auto 5rem; background: var(--paper); box-shadow: 0 2rem 7rem rgba(0,0,0,.25); }
+    .section { position: relative; padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 7vw, 7rem); border-top: 1px solid var(--line); overflow: hidden; }
+    .chapter { margin: 0 0 1.2rem; color: var(--ink-soft); font-size: .69rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
+    .display { margin: 0; font-family: var(--serif); font-weight: 400; letter-spacing: -.055em; line-height: .9; }
+
+    .hero {
+      min-height: calc(100svh - 6.4rem);
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: clamp(2.5rem, 7vw, 7rem);
+      padding: clamp(3rem, 7vw, 7rem);
+      color: var(--paper);
+      background:
+        radial-gradient(circle at 14% 12%, rgba(203,85,65,.2), transparent 29rem),
+        var(--ink);
+      border-top: 0;
+    }
+
+    .hero-copy { display: flex; flex-direction: column; justify-content: space-between; }
+    .hero .chapter { color: rgba(239,232,216,.55); }
+    h1 { max-width: 7ch; margin: 3rem 0; font-family: var(--serif); font-size: clamp(4.2rem, 9.5vw, 9rem); font-weight: 400; letter-spacing: -.075em; line-height: .76; }
+    .hero-intro { max-width: 38rem; margin: 0; color: rgba(239,232,216,.78); font-family: var(--serif); font-size: clamp(1.25rem, 2vw, 1.65rem); line-height: 1.5; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 2.5rem; }
+    .hero-meta span { padding: .6rem .78rem; border: 1px solid rgba(239,232,216,.25); border-radius: 99rem; color: rgba(239,232,216,.7); font-size: .65rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+
+    .art-placeholder {
+      position: relative;
+      min-height: 30rem;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 1px solid currentColor;
+      background: rgba(255,255,255,.025);
+      color: currentColor;
+    }
+
+    .art-placeholder::before,
+    .art-placeholder::after { content: ""; position: absolute; background: currentColor; opacity: .18; }
+    .art-placeholder::before { width: 1px; height: 100%; }
+    .art-placeholder::after { width: 100%; height: 1px; }
+    .placeholder-label { position: relative; z-index: 1; padding: .8rem 1rem; background: inherit; font-size: .67rem; font-weight: 800; letter-spacing: .13em; line-height: 1.55; text-align: center; text-transform: uppercase; }
+    .placeholder-corner { position: absolute; right: 1rem; bottom: 1rem; font-size: .6rem; letter-spacing: .1em; text-transform: uppercase; opacity: .55; }
+    .hero-art { align-self: stretch; color: rgba(239,232,216,.7); }
+
+    .overview { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(3rem, 8vw, 8rem); background: var(--paper-light); }
+    .overview h2 { font-size: clamp(3.3rem, 7vw, 6.8rem); }
+    .overview-copy { align-self: end; }
+    .overview-copy > p { margin: 0 0 3rem; font-family: var(--serif); font-size: clamp(1.3rem, 2vw, 1.65rem); }
+    .facts { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); border-top: 1px solid var(--line); }
+    .fact { padding: 1.2rem 1.4rem 1.4rem 0; border-bottom: 1px solid var(--line); }
+    .fact:nth-child(even) { padding-left: 1.4rem; border-left: 1px solid var(--line); }
+    .fact small { display: block; margin-bottom: .5rem; color: var(--ink-soft); font-size: .63rem; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+    .fact strong { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; }
+
+    .elements { color: var(--paper); background: var(--ink); }
+    .elements .chapter { color: rgba(239,232,216,.5); }
+    .elements-head { display: grid; grid-template-columns: 1fr .8fr; gap: 4rem; align-items: end; margin-bottom: 5rem; }
+    .elements h2 { font-size: clamp(3.8rem, 8vw, 7.8rem); }
+    .elements-head p:last-child { margin: 0; color: rgba(239,232,216,.66); }
+    .element-list { border-top: 1px solid rgba(239,232,216,.23); }
+    .element { --element: var(--paper); display: grid; grid-template-columns: 4.2rem minmax(0,1fr) minmax(12rem, .8fr); align-items: baseline; gap: 2rem; padding: 1.45rem 0; border-bottom: 1px solid rgba(239,232,216,.23); }
+    .element:nth-child(1) { --element: var(--fire); }
+    .element:nth-child(2) { --element: #78a4be; }
+    .element:nth-child(3) { --element: #b69968; }
+    .element:nth-child(4) { --element: #83a88d; }
+    .element:nth-child(5) { --element: #c1c2bd; }
+    .element-no { color: var(--element); font-size: .72rem; font-weight: 800; }
+    .element-name { color: var(--element); font-family: var(--serif); font-size: clamp(2.5rem, 5vw, 5rem); letter-spacing: -.05em; }
+    .element-traits { color: rgba(239,232,216,.62); text-align: right; }
+
+    .full-art { padding: clamp(1rem, 2vw, 2rem); color: var(--ink); background: var(--paper-deep); }
+    .full-art .art-placeholder { min-height: min(62vw, 48rem); background: var(--paper-light); }
+    .full-art-image { width: 100%; height: auto; display: block; border: 1px solid var(--line); }
+
+    .school { background: var(--paper); }
+    .section-title-row { display: grid; grid-template-columns: 1fr .8fr; gap: 4rem; align-items: end; margin-bottom: 5rem; }
+    .section-title-row h2 { font-size: clamp(3.4rem, 7vw, 7rem); }
+    .section-title-row > p { margin: 0; }
+    .prompt-grid { display: grid; grid-template-columns: repeat(3,1fr); border-top: 1px solid var(--line); }
+    .prompt { min-height: 19rem; padding: 1.8rem 1.8rem 1.8rem 0; }
+    .prompt + .prompt { padding-left: 1.8rem; border-left: 1px solid var(--line); }
+    .prompt-no { display: block; margin-bottom: 4rem; color: var(--fire); font-size: .72rem; font-weight: 800; }
+    .prompt h3 { margin: 0 0 1rem; font-family: var(--serif); font-size: clamp(1.7rem, 3vw, 2.7rem); font-weight: 400; line-height: 1.05; }
+    .prompt p { margin: 0; color: var(--ink-soft); }
+
+    .character { background: var(--paper-light); }
+    .character h2 { max-width: 9ch; font-size: clamp(3.6rem, 7.5vw, 7.4rem); }
+    .character-intro { max-width: 38rem; margin: 2rem 0 5rem; font-family: var(--serif); font-size: 1.35rem; }
+    .character-sheet { display: grid; grid-template-columns: repeat(2,1fr); border-top: 2px solid var(--ink); }
+    .field { min-height: 15rem; padding: 1.8rem 2rem 2.4rem 0; border-bottom: 1px solid var(--line); }
+    .field:nth-child(even) { padding-left: 2rem; border-left: 1px solid var(--line); }
+    .field small { display: block; margin-bottom: 2.6rem; color: var(--fire); font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+    .field h3 { margin: 0 0 .8rem; font-family: var(--serif); font-size: clamp(1.55rem, 2.7vw, 2.3rem); font-weight: 400; line-height: 1.1; }
+    .field p { margin: 0; color: var(--ink-soft); }
+
+    .proficiency { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(3rem, 8vw, 8rem); background: var(--wood); color: var(--paper-light); }
+    .proficiency h2 { font-size: clamp(3.3rem, 6.4vw, 6rem); }
+    .proficiency .chapter { color: rgba(248,244,234,.55); }
+    .proficiency-options { border-top: 1px solid rgba(248,244,234,.4); }
+    .option { display: grid; grid-template-columns: 5rem 1fr; gap: 1.5rem; padding: 2rem 0; border-bottom: 1px solid rgba(248,244,234,.4); }
+    .option strong { font-family: var(--serif); font-size: 4.5rem; font-weight: 400; line-height: .8; }
+    .option h3 { margin: 0 0 .55rem; font-family: var(--serif); font-size: 1.7rem; font-weight: 400; }
+    .option p { margin: 0; color: rgba(248,244,234,.72); }
+
+    .gameplay { background: var(--paper); }
+    .gameplay h2 { max-width: 9ch; margin-bottom: 5rem; font-size: clamp(3.7rem, 7.5vw, 7.2rem); }
+    .round-note { margin: -3rem 0 4rem; color: var(--ink-soft); font-family: var(--serif); font-size: 1.35rem; }
+    .turn-loop { counter-reset: turn; border-top: 1px solid var(--line); }
+    .turn-step { counter-increment: turn; display: grid; grid-template-columns: 5rem .8fr 1.2fr; gap: 2rem; padding: 1.7rem 0; border-bottom: 1px solid var(--line); }
+    .turn-step::before { content: "0" counter(turn); color: var(--fire); font-size: .72rem; font-weight: 800; }
+    .turn-step h3 { margin: 0; font-family: var(--serif); font-size: clamp(1.55rem, 2.7vw, 2.3rem); font-weight: 400; }
+    .turn-step p { margin: 0; color: var(--ink-soft); }
+
+    .choice-rule { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; margin-top: 4rem; padding: 1px; background: var(--line); }
+    .choice-card { min-height: 19rem; padding: clamp(2rem, 4vw, 3.5rem); background: var(--paper-light); }
+    .choice-card span { color: var(--fire); font-size: .68rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .choice-card h3 { margin: 3.5rem 0 1rem; font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.6rem); font-weight: 400; letter-spacing: -.04em; }
+    .choice-card p { margin: 0; }
+
+    .example { display: grid; grid-template-columns: .7fr 1.3fr; gap: clamp(3rem, 8vw, 8rem); color: var(--paper-light); background: var(--water); }
+    .example h2 { font-size: clamp(3.3rem, 6vw, 5.8rem); }
+    .example blockquote { margin: 0; align-self: end; font-family: var(--serif); font-size: clamp(1.25rem, 2vw, 1.65rem); line-height: 1.55; }
+    .example cite { display: block; margin-top: 2rem; font-family: var(--sans); font-size: .67rem; font-style: normal; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; opacity: .65; }
+
+    .graduation { background: var(--paper-light); }
+    .graduation h2 { font-size: clamp(3.6rem, 7vw, 6.8rem); }
+    .graduation-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; margin-top: 5rem; background: var(--line); }
+    .graduation-step { min-height: 19rem; padding: 2rem; background: var(--paper-light); }
+    .graduation-step b { color: var(--fire); font-size: 2.8rem; }
+    .graduation-step h3 { margin: 3rem 0 .8rem; font-family: var(--serif); font-size: 1.7rem; font-weight: 400; }
+    .graduation-step p { margin: 0; color: var(--ink-soft); }
+
+    .duel { color: var(--paper); background: var(--ink); }
+    .duel .chapter { color: rgba(239,232,216,.5); }
+    .duel h2 { max-width: 8ch; font-size: clamp(3.8rem, 7.5vw, 7rem); }
+    .duel-intro { max-width: 42rem; margin: 2rem 0 5rem; color: rgba(239,232,216,.68); font-family: var(--serif); font-size: 1.35rem; }
+    .duel-grid { display: grid; grid-template-columns: repeat(5,1fr); border-top: 1px solid rgba(239,232,216,.25); }
+    .duel-rule { min-height: 17rem; padding: 1.4rem; border-bottom: 1px solid rgba(239,232,216,.25); }
+    .duel-rule + .duel-rule { border-left: 1px solid rgba(239,232,216,.25); }
+    .duel-rule b { color: var(--fire); font-size: .72rem; }
+    .duel-rule h3 { margin: 3.5rem 0 .7rem; font-family: var(--serif); font-size: 1.45rem; font-weight: 400; }
+    .duel-rule p { margin: 0; color: rgba(239,232,216,.6); font-size: .9rem; }
+    .duel-art { margin-top: 4rem; color: rgba(239,232,216,.65); }
+    .duel-art.art-placeholder { min-height: 27rem; }
+    .duel-art-image { width: 100%; height: auto; display: block; border: 1px solid var(--line); }
+
+    .festivals { background: var(--paper-deep); }
+    .festivals h2 { font-size: clamp(3.7rem, 7vw, 7rem); }
+    .festival-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; margin-top: 5rem; padding: 1px; background: var(--line); }
+    .festival { min-height: 19rem; display: flex; flex-direction: column; justify-content: space-between; padding: 2rem; background: var(--paper-deep); }
+    .festival span { font-size: .67rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .festival h3 { margin: 3rem 0 .7rem; font-family: var(--serif); font-size: clamp(2.1rem, 4vw, 3.8rem); font-weight: 400; letter-spacing: -.04em; }
+    .festival p { max-width: 27rem; margin: 0; color: var(--ink-soft); }
+
+    .design-intent { color: var(--paper-light); background: var(--fire); }
+    .design-intent h2 { max-width: 9ch; font-size: clamp(3.7rem, 7vw, 6.8rem); }
+    .intent-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 5rem; }
+    .intent { padding-top: 1.3rem; border-top: 1px solid rgba(248,244,234,.6); }
+    .intent h3 { font-family: var(--serif); font-size: 1.8rem; font-weight: 400; }
+    .intent p { color: rgba(248,244,234,.78); }
+
+    .process-art { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 1rem; color: var(--ink); background: var(--paper); }
+    .process-art .art-placeholder { min-height: 32rem; background: var(--paper-light); }
+
+    .end { min-height: 36rem; display: flex; flex-direction: column; justify-content: space-between; color: var(--paper); background: var(--ink); }
+    .end p { font-size: .68rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .end h2 { max-width: 10ch; font-size: clamp(4rem, 9vw, 8.5rem); }
+    .end a { align-self: flex-end; text-underline-offset: .35rem; }
+
+    @media (max-width: 900px) {
+      .section-nav { display: none; }
+      .hero, .overview, .proficiency, .example { grid-template-columns: 1fr; }
+      .hero { min-height: auto; }
+      .hero-art { min-height: 38rem; }
+      .elements-head, .section-title-row { grid-template-columns: 1fr; gap: 2rem; }
+      .duel-grid { grid-template-columns: repeat(2,1fr); }
+      .duel-rule:nth-child(odd) { border-left: 0; }
+      .duel-rule:last-child { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 650px) {
+      .folio { width: 100%; margin: 0; }
+      .section { padding: 3.7rem 1.25rem; }
+      .topbar { min-height: 4rem; }
+      .topbar > span { display: none; }
+      h1 { font-size: clamp(4.2rem, 21vw, 6.7rem); }
+      .hero { padding: 3.5rem 1.25rem; }
+      .hero-art { min-height: 30rem; }
+      .facts, .prompt-grid, .character-sheet, .choice-rule, .graduation-grid, .festival-grid, .intent-grid, .process-art { grid-template-columns: 1fr; }
+      .fact:nth-child(even), .prompt + .prompt, .field:nth-child(even) { padding-left: 0; border-left: 0; }
+      .prompt { min-height: auto; padding: 1.8rem 0; border-bottom: 1px solid var(--line); }
+      .field, .field:nth-child(even) { min-height: auto; padding: 1.7rem 0 2rem; border-left: 0; }
+      .element { grid-template-columns: 2.3rem 1fr; gap: 1rem; }
+      .element-traits { grid-column: 2; text-align: left; }
+      .turn-step { grid-template-columns: 2.7rem 1fr; gap: 1rem; }
+      .turn-step p { grid-column: 2; }
+      .duel-grid { grid-template-columns: 1fr; }
+      .duel-rule, .duel-rule + .duel-rule, .duel-rule:nth-child(odd) { border-left: 0; }
+      .duel-rule:last-child { grid-column: auto; }
+      .process-art .art-placeholder { min-height: 26rem; }
+      .end a { align-self: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition-duration: .01ms !important; } }
+
+    /* Academic report direction */
+    :root {
+      --ink: #242625;
+      --ink-soft: #555956;
+      --paper: #ffffff;
+      --paper-deep: #efefec;
+      --paper-light: #f8f8f6;
+      --fire: #7b2132;
+      --water: #53758a;
+      --earth: #826e50;
+      --wood: #607d69;
+      --metal: #818581;
+      --line: rgba(36, 38, 37, .2);
+    }
+
+    html, body { background: #e5e5e1; }
+    .topbar { color: #fff; background: rgba(99, 25, 43, .96); border-bottom: 0; }
+    .section-nav a { color: rgba(255,255,255,.68); }
+    .section-nav a:hover { color: #fff; }
+    .folio { width: min(74rem, calc(100% - 2rem)); background: #fff; border: 1px solid #d3d3ce; box-shadow: 0 1.2rem 4rem rgba(24,25,24,.1); }
+    .section { border-top-color: #d6d6d1; }
+    .chapter { color: var(--fire); }
+
+    .hero {
+      min-height: 48rem;
+      display: block;
+      color: var(--ink);
+      background: linear-gradient(90deg, var(--fire) 0 .72rem, #fff .72rem 100%);
+      border-bottom: 1px solid #d6d6d1;
+    }
+    .hero-copy {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: clamp(2.5rem, 7vw, 7rem);
+      align-items: end;
+      margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+    }
+    .hero .chapter { color: var(--fire); }
+    .hero-intro { color: var(--ink-soft); }
+    .hero-meta span { color: var(--fire); border-color: rgba(123,33,50,.3); background: #faf7f7; }
+    .hero-art { color: #727572; background: #f6f6f3; }
+    .master-cover {
+      width: 100%;
+      min-height: 0;
+      aspect-ratio: 3508 / 2480;
+      display: block;
+      object-fit: contain;
+      border: 0;
+      background: #505050;
+    }
+
+    .overview, .school, .gameplay, .graduation { background: #fff; }
+    .elements { color: var(--ink); background: #f5f5f2; }
+    .elements .chapter { color: var(--fire); }
+    .elements-head p:last-child, .element-traits { color: var(--ink-soft); }
+    .element-list, .element { border-color: var(--line); }
+    .element:nth-child(1) { --element: #9b3b48; }
+    .element:nth-child(2) { --element: #527a90; }
+    .element:nth-child(3) { --element: #826e50; }
+    .element:nth-child(4) { --element: #607d69; }
+    .element:nth-child(5) { --element: #686d69; }
+    .full-art { color: var(--ink); background: #efefec; }
+    .full-art .art-placeholder, .process-art .art-placeholder { background: #fff; }
+    .character { background: #f8f8f6; }
+
+    .proficiency { color: var(--ink); background: #f0efeb; }
+    .proficiency .chapter { color: var(--fire); }
+    .proficiency-options, .option { border-color: var(--line); }
+    .option p { color: var(--ink-soft); }
+    .choice-card { background: #fafaf8; }
+
+    .example { color: var(--ink); background: #f3f1ee; border-left: .72rem solid var(--fire); }
+    .duel { color: var(--ink); background: #f7f7f5; }
+    .duel .chapter { color: var(--fire); }
+    .duel-intro, .duel-rule p { color: var(--ink-soft); }
+    .duel-grid, .duel-rule, .duel-rule + .duel-rule { border-color: var(--line); }
+    .duel-art { color: #6c706d; background: #fff; }
+    .festivals { background: #efefec; }
+    .festival { background: #efefec; }
+
+    .design-intent { color: var(--ink); background: #f8f8f6; }
+    .design-intent .chapter { color: var(--fire); }
+    .intent { border-color: var(--fire); }
+    .intent p { color: var(--ink-soft); }
+    .process-art { background: #efefec; }
+    .end { color: #fff; background: var(--fire); }
+
+    .source-copy { background: #fff; }
+    .source-copy h2 { max-width: 12ch; }
+    .source-prose { max-width: 54rem; margin-top: 2.5rem; color: var(--ink-soft); font-size: 1.02rem; line-height: 1.75; }
+    .source-prose p { margin: 0 0 1.2rem; }
+    .source-prose p:last-child { margin-bottom: 0; }
+    .trait-list { margin-top: 2.8rem; border-top: 1px solid var(--line); }
+    .trait-list p { margin: 0; padding: 1rem 0; border-bottom: 1px solid var(--line); color: var(--ink); }
+    .source-questions, .source-points, .source-festivals { display: grid; gap: 1px; margin-top: 3rem; background: var(--line); border: 1px solid var(--line); }
+    .source-questions { grid-template-columns: repeat(3, 1fr); }
+    .source-points { grid-template-columns: repeat(2, 1fr); }
+    .source-festivals { grid-template-columns: repeat(2, 1fr); }
+    .source-card { padding: clamp(1.4rem, 2.6vw, 2.3rem); background: #fff; }
+    .source-card p { margin: 0; color: var(--ink-soft); line-height: 1.7; }
+    .source-card h3 { margin: 0 0 1rem; font-family: var(--serif); font-size: 1.7rem; font-weight: 400; letter-spacing: -.025em; }
+    .source-subsection { margin-top: 3.8rem; padding-top: 2rem; border-top: 1px solid var(--line); }
+    .source-subsection h3 { margin: 0 0 1rem; font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.4rem); font-weight: 400; letter-spacing: -.035em; }
+    .source-flow { margin-top: 2.5rem; border-top: 1px solid var(--line); }
+    .source-flow p { margin: 0; padding: 1.25rem 0; border-bottom: 1px solid var(--line); color: var(--ink-soft); line-height: 1.75; }
+    .source-example { margin-top: 2.5rem; padding: clamp(1.5rem, 3vw, 2.5rem); background: var(--paper-light); border-left: .35rem solid var(--wood); }
+    .source-example h3 { margin: 0 0 1rem; font-family: var(--serif); font-size: 1.8rem; font-weight: 400; }
+    .source-example p { margin: 0; color: var(--ink-soft); line-height: 1.75; }
+
+    .source-copy > h2.display { margin-bottom: 2rem; font-size: clamp(3.4rem, 6.5vw, 6.5rem); }
+
+    .world-section { background: #f3efe7; }
+    .world-layout { display: grid; grid-template-columns: minmax(0, .82fr) minmax(24rem, 1.18fr); grid-template-rows: auto 1fr; gap: 2.5rem clamp(3rem, 7vw, 7rem); }
+    .world-intro { margin: 0; font-family: var(--serif); font-size: clamp(1.8rem, 3.2vw, 3.1rem); letter-spacing: -.035em; line-height: 1.2; }
+    .world-outro { align-self: end; padding-top: 1.5rem; border-top: 1px solid var(--line); color: var(--ink-soft); line-height: 1.7; }
+    .world-outro p { margin: 0 0 1rem; }
+    .world-outro p:last-child { margin: 0; color: var(--fire); font-family: var(--serif); font-size: 1.65rem; }
+    .world-section .trait-list { grid-column: 2; grid-row: 1 / 3; align-self: stretch; display: grid; margin: 0; border: 0; }
+    .world-section .trait-list p { position: relative; display: flex; align-items: center; margin: 0; padding: 1.25rem 1.4rem 1.25rem 3.5rem; border: 0; border-bottom: 1px solid rgba(36,38,37,.14); background: rgba(255,255,255,.58); line-height: 1.55; }
+    .world-section .trait-list p:first-child { border-top: 1px solid rgba(36,38,37,.14); }
+    .world-section .trait-list p::before { content: ""; position: absolute; left: 1.35rem; width: .78rem; height: .78rem; border-radius: 50%; background: var(--fire); }
+    .world-section .trait-list p:nth-child(2)::before { background: var(--water); }
+    .world-section .trait-list p:nth-child(3)::before { background: var(--earth); }
+    .world-section .trait-list p:nth-child(4)::before { background: var(--wood); }
+    .world-section .trait-list p:nth-child(5)::before { background: var(--metal); }
+
+    .school-section { display: grid; grid-template-columns: minmax(16rem, .72fr) minmax(0, 1.28fr); gap: 1.5rem clamp(3rem, 7vw, 7rem); background: #fff; }
+    .school-section > h2 { align-self: start; }
+    .school-section > .source-prose { align-self: end; margin: 0; }
+    .school-section > .source-questions { grid-column: 1 / -1; }
+    .source-questions .source-card { min-height: 16rem; border-top: .4rem solid var(--fire); }
+    .source-questions .source-card:nth-child(2) { border-top-color: var(--water); }
+    .source-questions .source-card:nth-child(3) { border-top-color: var(--wood); }
+
+    .character-section { background: #f3f3f0; }
+    .character-section > h2 { color: var(--fire); }
+    .character-section .source-points { counter-reset: character-field; }
+    .character-section .source-card { counter-increment: character-field; display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; align-items: start; min-height: 10rem; }
+    .character-section .source-card:last-child { grid-column: 1 / -1; }
+    .character-section .source-card::before { content: "0" counter(character-field); color: var(--fire); font-size: .68rem; font-weight: 800; letter-spacing: .1em; }
+    .character-section .source-subsection { display: grid; grid-template-columns: minmax(15rem, .7fr) minmax(0, 1.3fr); gap: 2rem 4rem; }
+    .character-section .source-subsection h3 { margin: 0; }
+    .character-section .source-subsection .source-prose { margin: 0; }
+
+    .gameplay-section { background: #edf2ed; }
+    .gameplay-section > h2 { color: var(--wood); }
+    .gameplay-section .source-flow { counter-reset: gameplay-step; }
+    .gameplay-section .source-flow p { counter-increment: gameplay-step; display: grid; grid-template-columns: 3.5rem 1fr; gap: 1.25rem; padding: 1.5rem 0; }
+    .gameplay-section .source-flow p::before { content: "0" counter(gameplay-step); color: var(--wood); font-size: .7rem; font-weight: 800; letter-spacing: .1em; }
+    .gameplay-section .source-example { border-left-color: var(--wood); background: rgba(255,255,255,.72); }
+    .gameplay-section .source-subsection:last-child { padding: 2.5rem; background: #fff; border-top: .45rem solid var(--fire); }
+
+    .combat-section { color: #fff; background: #252c2e; }
+    .combat-section > h2 { color: #fff; }
+    .combat-section .source-flow { counter-reset: combat-step; border-color: rgba(255,255,255,.2); }
+    .combat-section .source-flow p { counter-increment: combat-step; display: grid; grid-template-columns: 3.5rem 1fr; gap: 1.25rem; color: rgba(255,255,255,.78); border-color: rgba(255,255,255,.18); }
+    .combat-section .source-flow p::before { content: "0" counter(combat-step); color: #d98b98; font-size: .7rem; font-weight: 800; letter-spacing: .1em; }
+    .combat-section .duel-art { margin-top: 3.5rem; color: #6c706d; background: #f8f8f6; }
+
+    .festival-section { background: #eee9df; }
+    .festival-section > h2 { color: var(--fire); }
+    .festival-section .source-card { min-height: 15rem; border-top: .45rem solid var(--fire); }
+    .festival-section .source-card:nth-child(2) { border-top-color: var(--wood); }
+    .festival-section .source-card:nth-child(3) { border-top-color: var(--water); }
+    .festival-section .source-card:nth-child(4) { border-top-color: var(--earth); }
+
+    @media (max-width: 900px) {
+      .hero-copy { grid-template-columns: 1fr; }
+      .world-layout, .school-section { grid-template-columns: 1fr; }
+      .world-section .trait-list { grid-column: auto; grid-row: auto; }
+      .school-section > .source-questions { grid-column: auto; }
+      .character-section .source-subsection { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 650px) {
+      .folio { width: 100%; border-left: 0; border-right: 0; }
+      .hero { background: linear-gradient(90deg, var(--fire) 0 .38rem, #fff .38rem 100%); }
+      .source-questions, .source-points, .source-festivals { grid-template-columns: 1fr; }
+      .source-copy > h2.display { font-size: clamp(2.9rem, 15vw, 4.4rem); }
+      .character-section .source-card { grid-template-columns: 2.5rem 1fr; min-height: auto; }
+      .gameplay-section .source-flow p, .combat-section .source-flow p { grid-template-columns: 2.5rem 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="../index.html#work"><span aria-hidden="true">←</span> All projects</a>
+    <nav class="section-nav" aria-label="Project sections">
+      <a href="#world">World</a><a href="#character">Character</a><a href="#gameplay">Gameplay</a><a href="#duel">Duel</a>
+    </nav>
+  </header>
+
+  <main class="folio">
+    <section class="section hero">
+      <div class="hero-copy">
+        <div><p class="chapter">Game &amp; Learning Design Case Study · Project 03</p><h1>Master of Elements</h1></div>
+        <div><p class="hero-intro">In this world full of elements, people have discovered a way to control them through a set of designed movements called the Elemental Dance. Through different Elemental Dances, people can attack, defend, and perform other actions.</p></div>
+      </div>
+      <img class="hero-art master-cover" src="../assets/master-of-elements-cover.png" alt="Silhouette of an elemental dancer surrounded by sweeping red energy">
+    </section>
+
+    <section class="section source-copy world-section" id="world">
+      <div class="world-layout">
+        <p class="world-intro">There are five types of elements that people can summon in this game: fire, water, earth, metal, and wood. According to ancient legends, the elements are controlled by the dancer’s emotions.</p>
+        <div class="trait-list">
+          <p>Straightforward and enthusiastic dancers easily control fire elementals.</p>
+          <p>Gentle and thoughtful dancers easily control water elementals.</p>
+          <p>Staunch and introverted dancers easily control earth elementals.</p>
+          <p>Romantic and unrestrained dancers easily control wood elementals.</p>
+          <p>Upright and traditional dancers easily control metal elementals.</p>
+        </div>
+        <div class="world-outro"><p>As a player, you will take on the role of a new student at the School of Elemental Dance, where everything is new and unknown. Will you find friendship and achieve your goal before your time at the school comes to an end?</p><p>We will see…</p></div>
+      </div>
+    </section>
+
+    <section class="section full-art"><img class="full-art-image" src="../assets/master-of-elements-school.png" alt="Students practicing elemental dances in the courtyard of the School of Elemental Dance"></section>
+
+    <section class="section source-copy school-section">
+      <h2 class="display">Describe the School</h2>
+      <div class="source-prose">
+        <p>Describe the school’s setting together as a group. Choose wisely, as your characters will be shaped by the environment you create.</p>
+        <p>Answer the following questions about the school:</p>
+      </div>
+      <div class="source-questions">
+        <article class="source-card"><h3>Where is the school located?</h3><p>For example, is it on top of a floating island, secluded in a cave, or near the ocean?</p></article>
+        <article class="source-card"><h3>What is the school known for?</h3><p>For example, is it known for talented but ruthless students, or as a place reserved for only a select few?</p></article>
+        <article class="source-card"><h3>Who teaches at the school?</h3><p>For example, is the teacher a strict but forgiving master or a lighthearted instructor?</p></article>
+      </div>
+    </section>
+
+    <section class="section source-copy character-section" id="character">
+      <h2 class="display">Character Sheet Creation</h2>
+      <div class="source-points">
+        <article class="source-card"><p>Players need to create a name for their character.</p></article>
+        <article class="source-card"><p>Choose one or two main elements for the character: fire, water, earth, metal, or wood.</p></article>
+        <article class="source-card"><p>Create your character’s backstory. Where do they come from? Are they a student who has traveled far to learn the dance, or simply a curious learner interested in it?</p></article>
+        <article class="source-card"><p>Why does your character want to become an elemental dancer? For example, they may want to use the Elemental Dance to defeat their father’s killer, use an earth dance for gardening, or become a master of the elements and rule the world.</p></article>
+        <article class="source-card"><p>Choose a goal for your character to achieve, such as making a new friend or winning an elemental competition.</p></article>
+        <article class="source-card"><p>What makes your character want to become an elemental dancer? Perhaps they want to become a cook, and a fire dance could help them control fire. Alternatively, a water dance could help them explore the ocean.</p></article>
+        <article class="source-card"><p>What traumatic moment has your character experienced? For example, they may have suffered a childhood accident that burned their face and left a scar, or they may have lost the ability to move their legs after an attack by another elemental dancer.</p></article>
+      </div>
+      <div class="source-subsection">
+        <h3>Elemental Proficiency</h3>
+        <div class="source-prose"><p>If a player begins with only one main element, they start with two levels of proficiency in that element. If a player begins with two main elements, they start with one level of proficiency in each element.</p></div>
+      </div>
+      <div class="source-subsection">
+        <h3>Elemental Dance</h3>
+        <div class="source-prose"><p>Each player may create their own Elemental Dances. If you cannot think of one, you may use the Elemental Dance chart as an example.</p></div>
+      </div>
+    </section>
+
+    <section class="section full-art"><div class="art-placeholder" aria-label="Character sheet and dance illustration placeholder"><span class="placeholder-label">Character sheet / dance study</span><span class="placeholder-corner">Suggested ratio · 16:10</span></div></section>
+
+    <section class="section source-copy gameplay-section" id="gameplay">
+      <h2 class="display">Gameplay</h2>
+      <div class="source-prose"><p>There are two phases in the game: the Learning Phase and the Graduation Phase.</p></div>
+
+      <div class="source-subsection">
+        <h3>Learning Phase</h3>
+        <div class="source-flow">
+          <p>The Learning Phase consists of four big turns. The player who most recently played a sport goes first.</p>
+          <p>The starting player chooses another player and creates a scenario involving both characters at the school. During each big turn, a special event takes place at the school. Players may choose to interact with one another during the setup of this event.</p>
+          <p>The active player may ask the other player to teach them one level of proficiency in any element that the other player knows. If the other player refuses, or if the active player decides not to ask, the active player may instead increase their proficiency in an element they already know.</p>
+          <p>Other players may join the conversation, just as they might in college. Feel free to participate when the characters are discussing something that interests you.</p>
+          <p>Continue until every player has completed their turn. This marks the end of one big turn.</p>
+        </div>
+        <div class="source-example"><h3>Example Scenario</h3><p>The two of you meet on the dance field and introduce yourselves. You discover that you both love a movie starring the same actor. You are moved by the romantic emotions expressed in the film and ask the other player to teach you the wood dance. They agree and show you the dance.</p></div>
+      </div>
+
+      <div class="source-subsection">
+        <h3>Graduation Phase</h3>
+        <div class="source-prose"><p>During the Graduation Phase, players may choose either to challenge another player to an elemental duel or to perform all the dances they have learned.</p><p>After the duel or performance, the player gives a graduation speech about their time at the school. The other players then vote to decide whether the player graduates.</p></div>
+      </div>
+    </section>
+
+    <section class="section source-copy combat-section" id="duel">
+      <h2 class="display">Combat</h2>
+      <div class="source-flow">
+        <p>The two players stand face-to-face with some distance between them. Both players begin the round at the same time and call out the elements they have summoned.</p>
+        <p>Each element has strengths and weaknesses, which are listed in the elemental table. If one player’s move is strong against the opponent’s move, that player wins the round.</p>
+        <p>However, if a player summons an element with a proficiency level that is two levels higher than the other player’s, the player with the higher proficiency wins the round, even if their element is normally weak against the opponent’s element.</p>
+        <p>Both players then describe what happened during the round. A player receives one point for winning a round. The first player to reach three points wins the duel.</p>
+      </div>
+      <img class="duel-art duel-art-image" src="../assets/elemental-chart.png" alt="Element relationship chart showing fire, water, earth, wood, and metal">
+    </section>
+
+    <section class="section source-copy festival-section">
+      <h2 class="display">Festivals</h2>
+      <div class="source-festivals">
+        <article class="source-card"><h3>Turn 1: Elemental Day</h3><p>A celebration of the discovery of the Elemental Dances. This day is traditionally spent making new friends, baking an elemental cake together, and enjoying the celebration.</p></article>
+        <article class="source-card"><h3>Turn 2: Arbor Day</h3><p>A celebration in which students go outside, plant trees, and protect the natural environment.</p></article>
+        <article class="source-card"><h3>Turn 3: Valentine’s Day</h3><p>A festival for showing love and appreciation to someone you care about.</p></article>
+        <article class="source-card"><h3>Turn 4: Spring Festival</h3><p>A festival for gathering together, playing with fireworks, and performing Elemental Dances for friends and family to welcome a fresh start to the new year.</p></article>
+      </div>
+    </section>
+
+    <section class="section process-art">
+      <div class="art-placeholder" aria-label="Game materials placeholder"><span class="placeholder-label">Game materials / cards</span><span class="placeholder-corner">Suggested ratio · 4:5</span></div>
+      <div class="art-placeholder" aria-label="Playtest documentation placeholder"><span class="placeholder-label">Playtest / process image</span><span class="placeholder-corner">Suggested ratio · 4:5</span></div>
+    </section>
+
+    <section class="section end">
+      <p>Master of Elements</p>
+      <h2 class="display">Every movement tells a story.</h2>
+      <a href="../index.html#work">Return to all projects →</a>
+    </section>
+  </main>
+</body>
+</html>

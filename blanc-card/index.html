@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ef664f">
+  <meta name="description" content="Blanc Card is a tactile storytelling game built around touch and imagination.">
+  <title>Blanc Card — Create and Share Your Story</title>
+  <style>
+    :root {
+      --coral: #ef664f;
+      --coral-dark: #c84132;
+      --teal: #174d4c;
+      --ink: #1f2525;
+      --muted: #626a68;
+      --cream: #f5f0e5;
+      --paper: #fffdf8;
+      --mint: #dce9e3;
+      --yellow: #edc95c;
+      --line: rgba(31,37,37,.2);
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: "Arial Nova", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: #e9e4da; }
+    body { min-width: 320px; margin: 0; color: var(--ink); background: #e9e4da; font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+    p { line-height: 1.7; }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+    .topbar { position: sticky; top: 0; z-index: 20; min-height: 4.4rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding: .8rem clamp(1rem,3vw,3rem); color: #fff; background: rgba(23,77,76,.96); backdrop-filter: blur(12px); font-size: .7rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .back { display: inline-flex; align-items: center; gap: .7rem; text-decoration: none; white-space: nowrap; }
+    .back span { font-size: 1.05rem; transition: transform .25s ease; }
+    .back:hover span { transform: translateX(-.25rem); }
+    .section-nav { display: flex; gap: clamp(1rem,2.4vw,2.5rem); }
+    .section-nav a { color: rgba(255,255,255,.72); text-decoration: none; }
+    .section-nav a:hover { color: #fff; }
+
+    .report { width: min(74rem,calc(100% - 2rem)); margin: 1rem auto 5rem; background: var(--paper); border: 1px solid #d5d0c7; box-shadow: 0 1.2rem 4rem rgba(31,37,37,.1); }
+    .section { position: relative; padding: clamp(4rem,8vw,8rem) clamp(1.5rem,7vw,7rem); overflow: hidden; border-top: 1px solid var(--line); }
+    .chapter { margin: 0 0 1.2rem; color: var(--coral-dark); font-size: .69rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
+    .display { margin: 0; font-family: var(--serif); font-weight: 400; letter-spacing: -.055em; line-height: .92; }
+
+    .hero { min-height: 49rem; display: grid; grid-template-columns: 1.06fr .94fr; gap: clamp(2.5rem,7vw,7rem); padding: clamp(3rem,7vw,7rem); background: linear-gradient(90deg,var(--coral) 0 .72rem,var(--paper) .72rem 100%); border-top: 0; }
+    .hero-copy { display: flex; flex-direction: column; justify-content: space-between; }
+    h1 { max-width: 7ch; margin: 1.8rem 0 1rem; font-family: var(--serif); font-size: clamp(4.2rem,9vw,8.4rem); font-weight: 400; letter-spacing: -.075em; line-height: .82; }
+    .subtitle { max-width: 30rem; margin: 0; color: var(--teal); font-size: clamp(1rem,1.7vw,1.35rem); font-weight: 800; line-height: 1.4; }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; margin-top: 3rem; border-top: 1px solid var(--line); }
+    .stat { padding: 1.3rem 1.2rem 0 0; }
+    .stat + .stat { padding-left: 1.2rem; border-left: 1px solid var(--line); }
+    .stat b { display: block; color: var(--coral-dark); font-family: var(--serif); font-size: 1.45rem; font-weight: 400; }
+    .stat span { display: block; margin-top: .35rem; color: var(--muted); font-size: .68rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+
+    .cover-art { position: relative; min-height: 34rem; align-self: stretch; display: grid; place-items: center; color: var(--teal); background: var(--mint); border: 1px solid currentColor; }
+    .cover-art::before, .cover-art::after { content: ""; position: absolute; background: currentColor; opacity: .16; }
+    .cover-art::before { width: 1px; height: 100%; }
+    .cover-art::after { width: 100%; height: 1px; }
+    .cover-art span { position: relative; z-index: 1; padding: .8rem 1rem; background: var(--mint); font-size: .67rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+
+    .about { display: grid; grid-template-columns: .72fr 1.28fr; gap: clamp(3rem,8vw,8rem); background: var(--cream); }
+    .about h2, .themes h2, .blanc h2, .play h2 { font-size: clamp(3.5rem,7.4vw,7rem); }
+    .about-copy { align-self: end; }
+    .about-copy p { margin: 0 0 1.4rem; color: var(--muted); font-family: var(--serif); font-size: clamp(1.15rem,1.8vw,1.45rem); }
+    .about-copy p:last-child { margin-bottom: 0; }
+
+    .themes { color: #fff; background: var(--teal); }
+    .themes .chapter { color: var(--yellow); }
+    .themes-head { display: grid; grid-template-columns: 1fr .9fr; gap: 4rem; align-items: end; }
+    .themes-head p { margin: 0; color: rgba(255,255,255,.76); font-family: var(--serif); font-size: 1.25rem; }
+    .theme-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; margin-top: 5rem; padding: 1px; background: rgba(255,255,255,.28); }
+    .theme { min-height: 10rem; display: flex; align-items: flex-end; padding: 1.5rem; background: var(--teal); font-family: var(--serif); font-size: clamp(1.55rem,3vw,2.35rem); }
+    .theme:nth-child(2), .theme:nth-child(5) { background: #245f5b; }
+    .theme:nth-child(3), .theme:nth-child(6) { background: #326b65; }
+
+    .blanc { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(3rem,8vw,8rem); align-items: center; background: var(--paper); }
+    .blanc-copy p { color: var(--muted); }
+    .tactile-card { width: min(100%,25rem); aspect-ratio: 4/5; justify-self: center; position: relative; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 1.4rem; background: #fff; box-shadow: 1.2rem 1.2rem 0 var(--mint), 2.3rem 2.3rem 0 var(--coral); }
+    .dot-field { width: 62%; height: 55%; display: grid; grid-template-columns: repeat(5,1fr); align-items: center; justify-items: center; transform: rotate(-8deg); }
+    .dot { width: clamp(.5rem,1.4vw,.85rem); aspect-ratio: 1; border-radius: 50%; background: var(--teal); box-shadow: inset -.14rem -.14rem .2rem rgba(0,0,0,.2), 0 .16rem .18rem rgba(0,0,0,.17); }
+    .dot:nth-child(3n) { transform: translateY(1.4rem); }
+    .dot:nth-child(4n) { background: var(--coral); transform: translateX(-.7rem); }
+
+    .play { background: var(--cream); }
+    .play h2 { margin-bottom: 4.5rem; }
+    .steps { counter-reset: play-step; border-top: .35rem solid var(--teal); }
+    .step { counter-increment: play-step; display: grid; grid-template-columns: 4rem minmax(13rem,.68fr) minmax(0,1.32fr); gap: 1.5rem 2rem; padding: 2.2rem 0; border-bottom: 1px solid var(--line); }
+    .step::before { content: "0" counter(play-step); color: var(--coral-dark); font-size: .72rem; font-weight: 800; }
+    .step h3 { margin: 0; font-family: var(--serif); font-size: clamp(1.75rem,3vw,2.6rem); font-weight: 400; line-height: 1.08; }
+    .step div p { margin: 0; color: var(--muted); }
+    .step div p + p { margin-top: 1rem; }
+
+    .process-art { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 1rem; background: #e8e4da; }
+    .placeholder { min-height: 31rem; position: relative; display: grid; place-items: center; color: #727a77; border: 1px solid currentColor; background: #fff; }
+    .placeholder::before, .placeholder::after { content: ""; position: absolute; background: currentColor; opacity: .15; }
+    .placeholder::before { width: 1px; height: 100%; }
+    .placeholder::after { width: 100%; height: 1px; }
+    .placeholder span { position: relative; z-index: 1; padding: .8rem; background: #fff; font-size: .67rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+
+    .end { min-height: 34rem; display: flex; flex-direction: column; justify-content: space-between; color: #fff; background: var(--coral); }
+    .end p { font-size: .68rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .end h2 { max-width: 9ch; font-size: clamp(4rem,9vw,8.3rem); }
+    .end a { align-self: flex-end; text-underline-offset: .35rem; }
+
+    @media (max-width: 900px) {
+      .section-nav { display: none; }
+      .hero, .about, .blanc { grid-template-columns: 1fr; }
+      .hero { min-height: auto; }
+      .cover-art { min-height: 34rem; }
+      .themes-head { grid-template-columns: 1fr; gap: 2rem; }
+      .step { grid-template-columns: 3rem 1fr; }
+      .step div { grid-column: 2; }
+    }
+
+    @media (max-width: 650px) {
+      .report { width: 100%; margin: 0; border-left: 0; border-right: 0; }
+      .section { padding: 3.7rem 1.25rem; }
+      .topbar { min-height: 4rem; }
+      .hero { padding: 3.5rem 1.25rem; background: linear-gradient(90deg,var(--coral) 0 .38rem,var(--paper) .38rem 100%); }
+      h1 { font-size: clamp(4.3rem,22vw,6.6rem); }
+      .stats, .theme-grid, .process-art { grid-template-columns: 1fr; }
+      .stat + .stat { padding-left: 0; border-left: 0; }
+      .theme { min-height: 7rem; }
+      .tactile-card { width: calc(100% - 2.3rem); }
+      .step { grid-template-columns: 2.7rem 1fr; gap: 1rem; }
+      .placeholder { min-height: 25rem; }
+      .end a { align-self: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="../index.html#work"><span aria-hidden="true">←</span> All projects</a>
+    <nav class="section-nav" aria-label="Project sections"><a href="#about">About</a><a href="#cards">Cards</a><a href="#gameplay">How to Play</a></nav>
+  </header>
+
+  <main class="report">
+    <section class="section hero">
+      <div class="hero-copy">
+        <div><p class="chapter">Tactile Storytelling Game · Project 01</p><h1>Blanc Card</h1><p class="subtitle">Create and share your story!</p></div>
+        <div class="stats"><div class="stat"><b>40 cards · 20 themes</b><span>Infinite stories</span></div><div class="stat"><b>2–6 players</b><span>30–60 minutes</span></div></div>
+      </div>
+      <div class="cover-art" aria-label="Blanc Card cover illustration placeholder"><span>Cover illustration</span></div>
+    </section>
+
+    <section class="section about" id="about">
+      <div><p class="chapter">I · About the Game</p><h2 class="display">Touch.<br>Imagine.<br>Tell.</h2></div>
+      <div class="about-copy">
+        <p><strong>Blanc Card</strong> is a tactile storytelling game built around touch and imagination.</p>
+        <p>In this game, instead of looking at the cards, players use their hands to explore illustrations made from raised dots on the card. Each player decides what the shapes might represent and uses that idea to build a story based on their Theme Card.</p>
+        <p>Based on different players the same card can inspire completely different ideas, so every story develops in its own way.</p>
+      </div>
+    </section>
+
+    <section class="section themes" id="cards">
+      <div class="themes-head"><div><p class="chapter">II · Theme Cards</p><h2 class="display">Choose a world.</h2></div><p>At the beginning of the game, each player draws one card from the Theme Deck. The card provides the theme for that player’s story.</p></div>
+      <div class="theme-grid" aria-label="Themes include"><div class="theme">Folklore</div><div class="theme">Fantasy</div><div class="theme">Adventure</div><div class="theme">Sports</div><div class="theme">Family</div><div class="theme">Animals</div></div>
+    </section>
+
+    <section class="section blanc">
+      <div class="tactile-card" aria-label="Example tactile Blanc Card made with raised dots"><div class="dot-field" aria-hidden="true">
+        <i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i>
+      </div></div>
+      <div class="blanc-copy"><p class="chapter">III · Blanc Cards</p><h2 class="display">Feel the picture.</h2><p>Blanc Cards have no words or printed pictures. Each card contains an abstract pattern made from raised dots in the front of the cards.</p><p>Players feel the pattern and imagine what it could be. One player might interpret a card as a dragon, while another might imagine a mountain, a river, or something entirely different, anything is possible!</p></div>
+    </section>
+
+    <section class="section play" id="gameplay">
+      <p class="chapter">IV · How to Play</p><h2 class="display">One card at a time.</h2>
+      <div class="steps">
+        <article class="step"><h3>Draw your cards</h3><div><p>Each player draws one Theme Card and one Blanc Card.</p></div></article>
+        <article class="step"><h3>Begin your story</h3><div><p>Players have five minutes to explore their Blanc Card and create the opening of a story based on their theme.</p></div></article>
+        <article class="step"><h3>Share with the group</h3><div><p>Players take turns sharing the beginning of their stories.</p></div></article>
+        <article class="step"><h3>Draw another Blanc Card</h3><div><p>At the beginning of each new round, every player draws another Blanc Card and uses it to continue their story.</p><p>Players may exchange Blanc Cards during a round if both players agree.</p></div></article>
+        <article class="step"><h3>Finish the story</h3><div><p>Play continues for four rounds. In the final round, each player completes their story and shares the ending with the group.</p></div></article>
+      </div>
+    </section>
+
+    <section class="section process-art"><div class="placeholder" aria-label="Theme cards artwork placeholder"><span>Theme cards</span></div><div class="placeholder" aria-label="Blanc cards and playtest artwork placeholder"><span>Blanc cards / playtest</span></div></section>
+
+    <section class="section end"><p>Blanc Card</p><h2 class="display">Every touch begins a story.</h2><a href="../index.html#work">Return to all projects →</a></section>
+  </main>
+</body>
+</html>
