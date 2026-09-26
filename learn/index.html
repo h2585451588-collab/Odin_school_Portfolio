@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#1f4e70">
-  <meta name="description" content="Learn — a classroom tabletop roleplaying game in which teachers and students co-create a classroom through inquiry, presentation, and shared rewards.">
-  <title>Learn — A Classroom Tabletop Roleplaying Game</title>
+  <meta name="description" content="Learn is a classroom tabletop role-playing game in which teachers and students build a classroom together through research, sharing, and group rewards.">
+  <title>Learn — A Classroom Tabletop Role-Playing Game</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f4e70'/%3E%3Cpath d='M17 17h22a8 8 0 0 1 8 8v25H25a8 8 0 0 1-8-8V17Z' fill='none' stroke='%23fff' stroke-width='4'/%3E%3Cpath d='M27 29h14M27 38h10' stroke='%23d2a85f' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
   <style>
     :root {
@@ -221,6 +221,64 @@
     }
 
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition-duration: .01ms !important; } }
+
+    /* Notebook structure, classroom tools, and collaborative learning cards. */
+    body {
+      background-color: #dfe5e8;
+      background-image:
+        linear-gradient(rgba(31,78,112,.075) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31,78,112,.075) 1px, transparent 1px);
+      background-size: 1.6rem 1.6rem;
+    }
+    .topbar { border-bottom: .22rem solid var(--gold); }
+    .report { border-top: .5rem solid var(--navy); }
+    .chapter { display: inline-flex; align-items: center; gap: .65rem; }
+    .chapter::before {
+      content: "";
+      width: .8rem;
+      height: .8rem;
+      flex: 0 0 auto;
+      background: var(--gold);
+      transform: rotate(8deg);
+    }
+    .hero {
+      background:
+        linear-gradient(90deg, var(--navy) 0 .72rem, transparent .72rem),
+        linear-gradient(rgba(31,78,112,.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31,78,112,.055) 1px, #fff 1px);
+      background-size: 100% 100%, 1.6rem 1.6rem, 1.6rem 1.6rem;
+    }
+    .art-placeholder {
+      border-style: dashed;
+      background-color: #fbfcfc;
+      background-image: linear-gradient(rgba(31,78,112,.08) 1px, transparent 1px);
+      background-size: 100% 1.45rem;
+    }
+    .role-grid { gap: 1rem; padding: 1rem; background: #dbe5ea; border: 0; }
+    .role { border-top: .45rem solid var(--navy); box-shadow: 0 .6rem 0 rgba(31,78,112,.08); }
+    .role:nth-child(2) { border-top-color: var(--gold); }
+    .gameplay-section .phase { padding-right: 1rem; padding-left: 1rem; background: rgba(255,255,255,.48); }
+    .reference-list { border-left: .45rem solid var(--gold); }
+    .end {
+      background-color: var(--navy-dark);
+      background-image:
+        linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px);
+      background-size: 1.7rem 1.7rem;
+    }
+
+    @media (max-width: 650px) {
+      .report { border-top-width: .35rem; }
+      .hero {
+        background:
+          linear-gradient(90deg, var(--navy) 0 .38rem, transparent .38rem),
+          linear-gradient(rgba(31,78,112,.055) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(31,78,112,.055) 1px, #fff 1px);
+        background-size: 100% 100%, 1.4rem 1.4rem, 1.4rem 1.4rem;
+      }
+      .role-grid { padding: .65rem; }
+      .gameplay-section .phase { padding-right: .75rem; padding-left: .75rem; }
+    }
   </style>
 </head>
 <body>
@@ -232,8 +290,8 @@
   <main class="report">
     <section class="section hero">
       <div class="hero-copy">
-        <div><p class="chapter">Game &amp; Learning Design Case Study · Project 02</p><h1>Learn</h1><p class="subtitle">A Classroom Tabletop Roleplaying Game</p></div>
-        <div><p class="hero-intro">In <strong>Learn</strong>, a classroom tabletop roleplaying game, players take on two different roles: one teacher and many students. Together, they learn and build their classroom collaboratively. The game has no specific winning condition. Instead, the goal is to create a classroom that everyone loves and to form a shared story as teacher and students.</p></div>
+        <div><p class="chapter">Game &amp; Learning Design Case Study · Project 02</p><h1>Learn</h1><p class="subtitle">A Classroom Tabletop Role-Playing Game</p></div>
+        <div><p class="hero-intro">In <strong>Learn</strong>, a classroom tabletop role-playing game, the group includes two roles: one teacher and several students. Together, they learn and build a shared classroom. The game has no set winning condition. Instead, the goal is to create a classroom that everyone loves and to build a shared story together.</p></div>
       </div>
       <div class="art-placeholder hero-art" aria-label="Learn cover illustration placeholder"><span class="placeholder-label">Cover illustration</span><span class="placeholder-corner">Suggested ratio · 4:5</span></div>
     </section>
@@ -241,8 +299,8 @@
     <section class="section setting-section" id="setting">
       <div class="setting-head"><div><p class="chapter">I · Setting Up</p><h2 class="display">Setting Up</h2></div><p>There are two roles players can choose from:</p></div>
       <div class="role-grid">
-        <article class="role"><span class="role-no">Teacher</span><h3>Teacher</h3><p>To play as the teacher, a player receives a deck of cards featuring different subjects. The teacher’s goal is to describe or introduce a subject to the student players, set a learning goal for the class, and create activities that allow students to explore the subject creatively.</p></article>
-        <article class="role"><span class="role-no">Student</span><h3>Student</h3><p>Each student creates a character sheet. Players give their character a unique name, personality, strengths, and behaviors. A student’s role is to follow their chosen character and complete the teacher’s activities in a way that fits who the character is. For example, if a student’s character loves art and the class topic is dogs and cats as human companions, they might create an artwork that expresses their thoughts on the topic.</p></article>
+        <article class="role"><span class="role-no">Teacher</span><h3>Teacher</h3><p>The teacher receives a deck of cards featuring different subjects. Their goal is to introduce a subject to the students, set a learning goal for the class, and create activities that allow students to explore the subject in creative ways.</p></article>
+        <article class="role"><span class="role-no">Student</span><h3>Student</h3><p>Each student creates a character sheet. Players give their character a unique name, personality, strengths, and habits. A student completes the teacher’s activities in a way that fits their character. For example, if a character loves art and the class topic is dogs and cats as human companions, the student might create a piece of art that shares their thoughts on the topic.</p></article>
       </div>
     </section>
 
@@ -251,10 +309,10 @@
     <section class="section gameplay-section" id="gameplay">
       <p class="chapter">II · Gameplay</p><h2 class="display">Gameplay</h2>
       <div class="phase-list">
-        <article class="phase"><span class="phase-no" aria-hidden="true"></span><h3>Topic Release</h3><p>The teacher begins by introducing the topic for the turn. This could involve describing it, showing a picture, or asking students to explore how it appears in their own lives. There is no single correct way to do this; the teacher can be as creative as they like.</p></article>
-        <article class="phase"><span class="phase-no" aria-hidden="true"></span><h3>Student Research and Study</h3><p>During this phase, students take time to explore the topic. They might focus on what interests them, build on what they already know, or find related ideas that inspire them. It is okay if what they discover is not directly about the topic, as long as it connects in some way. Students can also ask the teacher questions. If the teacher does not know the answer, that is okay; they can research it together. After exploring, students decide how they want to present what they have learned and what interests them most.</p></article>
-        <article class="phase"><span class="phase-no" aria-hidden="true"></span><h3>Presenting</h3><p>Each student may present their work. If a student does not want to present, that is completely fine. The teacher should encourage them gently, but if they still prefer not to share, the group can show support and move on. After each presentation, the group discusses what they appreciated and gives a round of applause to recognize the effort.</p></article>
-        <article class="phase"><span class="phase-no" aria-hidden="true"></span><h3>Rewarding</h3><p>After everyone has had the opportunity to present, the group enters the Rewarding phase. Together, they create one or more declarations for the classroom: something symbolic or tangible that reflects the topic they just explored. A declaration can be anything, such as a pair of cozy chairs, a new bookshelf, or a class motto—anything that adds meaning or personality to the shared classroom space.</p></article>
+        <article class="phase"><span class="phase-no" aria-hidden="true"></span><h3>Introducing the Topic</h3><p>The teacher begins by introducing the topic for the turn. They might describe it, show a picture, or ask students to explore how it appears in their own lives. There is no single correct way to do this, so the teacher can be as creative as they like.</p></article>
+        <article class="phase"><span class="phase-no" aria-hidden="true"></span><h3>Research and Study</h3><p>During this phase, students take time to explore the topic. They might focus on what interests them, build on what they already know, or find related ideas that inspire them. Their discoveries do not need to be directly about the topic, as long as there is a clear connection. Students can also ask the teacher questions. If the teacher does not know an answer, they can research it together. After exploring, students decide how they want to share what they have learned and what interests them most.</p></article>
+        <article class="phase"><span class="phase-no" aria-hidden="true"></span><h3>Sharing</h3><p>Each student may share their work. If a student does not want to share, that is completely fine. The teacher should offer gentle support, but the group can move on if the student still prefers not to present. After each presentation, the group discusses what they liked and gives a round of applause to recognize the student’s effort.</p></article>
+        <article class="phase"><span class="phase-no" aria-hidden="true"></span><h3>Creating a Class Reward</h3><p>After everyone has had a chance to present, the group creates one or more additions to the classroom. Each addition can be symbolic or physical and should reflect the topic the group just explored. It could be a pair of cozy chairs, a new bookshelf, or a class motto—anything that adds meaning or personality to the shared classroom.</p></article>
       </div>
     </section>
 

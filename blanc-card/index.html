@@ -128,6 +128,50 @@
     }
 
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+    /* Tactile paper, raised dots, and softly rounded card forms. */
+    body {
+      background-color: #e7dfd1;
+      background-image: radial-gradient(rgba(23,77,76,.12) 0 .07rem, transparent .08rem);
+      background-size: 1.15rem 1.15rem;
+    }
+    .topbar { border-bottom: .22rem solid var(--yellow); }
+    .report { overflow: hidden; border-radius: 1.35rem; }
+    .chapter { display: flex; align-items: center; gap: .65rem; }
+    .chapter::before {
+      content: "";
+      width: .7rem;
+      aspect-ratio: 1;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--coral);
+      box-shadow: inset -.1rem -.1rem .14rem rgba(0,0,0,.18), 0 .12rem .16rem rgba(0,0,0,.14);
+    }
+    .cover-art {
+      border-radius: 1.4rem;
+      background-color: var(--mint);
+      background-image:
+        radial-gradient(circle, rgba(23,77,76,.28) 0 .23rem, transparent .26rem),
+        radial-gradient(circle, rgba(239,102,79,.2) 0 .16rem, transparent .2rem);
+      background-position: 0 0, 1.3rem 1.3rem;
+      background-size: 2.6rem 2.6rem;
+      box-shadow: .8rem .8rem 0 rgba(237,201,92,.5);
+    }
+    .theme-grid { gap: .75rem; padding: 0; background: transparent; }
+    .theme { border: 1px solid rgba(255,255,255,.28); border-radius: .8rem; }
+    .step { transition: padding .25s ease, background .25s ease; }
+    .step:hover { padding-right: 1rem; padding-left: 1rem; background: rgba(255,253,248,.62); }
+    .placeholder { border-radius: 1rem; }
+    .end {
+      background-color: var(--coral);
+      background-image: radial-gradient(rgba(255,255,255,.18) 0 .1rem, transparent .12rem);
+      background-size: 1.7rem 1.7rem;
+    }
+
+    @media (max-width: 650px) {
+      .report { border-radius: 0; }
+      .step:hover { padding-right: 0; padding-left: 0; }
+    }
   </style>
 </head>
 <body>
@@ -149,8 +193,8 @@
       <div><p class="chapter">I · About the Game</p><h2 class="display">Touch.<br>Imagine.<br>Tell.</h2></div>
       <div class="about-copy">
         <p><strong>Blanc Card</strong> is a tactile storytelling game built around touch and imagination.</p>
-        <p>In this game, instead of looking at the cards, players use their hands to explore illustrations made from raised dots on the card. Each player decides what the shapes might represent and uses that idea to build a story based on their Theme Card.</p>
-        <p>Based on different players the same card can inspire completely different ideas, so every story develops in its own way.</p>
+        <p>Instead of looking at the cards, players use their hands to explore illustrations made from raised dots. Each player decides what the shapes might represent and uses that idea to build a story based on their Theme Card.</p>
+        <p>The same card can inspire different ideas in different players, so every story develops in its own way.</p>
       </div>
     </section>
 
@@ -163,7 +207,7 @@
       <div class="tactile-card" aria-label="Example tactile Blanc Card made with raised dots"><div class="dot-field" aria-hidden="true">
         <i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i>
       </div></div>
-      <div class="blanc-copy"><p class="chapter">III · Blanc Cards</p><h2 class="display">Feel the picture.</h2><p>Blanc Cards have no words or printed pictures. Each card contains an abstract pattern made from raised dots in the front of the cards.</p><p>Players feel the pattern and imagine what it could be. One player might interpret a card as a dragon, while another might imagine a mountain, a river, or something entirely different, anything is possible!</p></div>
+      <div class="blanc-copy"><p class="chapter">III · Blanc Cards</p><h2 class="display">Feel the picture.</h2><p>Blanc Cards have no words or printed pictures. Each card has an abstract pattern made from raised dots on the front.</p><p>Players feel the pattern and imagine what it could be. One player might imagine a dragon, while another might imagine a mountain, a river, or something entirely different. Anything is possible!</p></div>
     </section>
 
     <section class="section play" id="gameplay">

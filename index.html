@@ -307,6 +307,43 @@
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
       .project-image { transform: none !important; }
     }
+
+    /* Each project keeps the portfolio system while carrying its own game language. */
+    .project[data-project="blanc"] {
+      --project-accent: #ef664f;
+      border-radius: 1.2rem;
+    }
+    .project[data-project="blanc"] .master-placeholder {
+      background-color: #d8d0c2;
+      background-image:
+        radial-gradient(circle at 25% 24%, rgba(239,102,79,.72) 0 .28rem, transparent .32rem),
+        radial-gradient(circle at 70% 58%, rgba(23,77,76,.62) 0 .22rem, transparent .27rem),
+        linear-gradient(145deg, rgba(255,255,255,.48), transparent 48%);
+      background-size: 3.2rem 3.2rem, 4.2rem 4.2rem, 100% 100%;
+    }
+    .project[data-project="learn"] {
+      --project-accent: #d2a85f;
+      border-radius: .2rem;
+    }
+    .project[data-project="learn"] .master-placeholder {
+      background-color: #a8bbc7;
+      background-image:
+        linear-gradient(rgba(255,255,255,.22) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.22) 1px, transparent 1px),
+        linear-gradient(145deg, rgba(255,255,255,.32), transparent 55%);
+      background-size: 2rem 2rem, 2rem 2rem, 100% 100%;
+    }
+    .project[data-project="elements"] {
+      --project-accent: #9b3b48;
+      border-radius: .15rem;
+      border-color: rgba(155,59,72,.54);
+    }
+    .project[data-project="elements"]::after {
+      background:
+        radial-gradient(circle at var(--mx) var(--my), transparent 0 8%, rgba(32,10,13,.2) 38%, rgba(0,0,0,.64) 82%),
+        linear-gradient(165deg, rgba(123,33,50,.18), transparent 45%),
+        linear-gradient(180deg, transparent 25%, rgba(0,0,0,.88) 100%);
+    }
   </style>
 </head>
 <body>
@@ -349,7 +386,7 @@
         <img class="project-image" src="assets/master-of-elements-cover.png" alt="Silhouette of an elemental dancer surrounded by sweeping red energy">
         <div class="project-content">
           <div>
-            <p class="project-type">Systems learning · Strategy game</p>
+            <p class="project-type">Movement game · Role-playing game</p>
             <h2>Master of Elements</h2>
             <p class="project-summary">A board game you can play without a table.</p>
           </div>

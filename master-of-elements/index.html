@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#18201d">
-  <meta name="description" content="Master of Elements — a collaborative coming-of-age role-playing game about elemental dance, friendship, identity, and peer learning.">
+  <meta name="description" content="Master of Elements is a group role-playing game about elemental dance, friendship, identity, and learning from one another.">
   <title>Master of Elements — Game &amp; Learning Design</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2318201d'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='%23efe8d8' stroke-width='3'/%3E%3Ccircle cx='32' cy='14' r='4' fill='%23cb5541'/%3E%3Ccircle cx='49' cy='27' r='4' fill='%234a748d'/%3E%3Ccircle cx='42' cy='48' r='4' fill='%23816c4b'/%3E%3Ccircle cx='22' cy='48' r='4' fill='%235f8068'/%3E%3Ccircle cx='15' cy='27' r='4' fill='%23aaa89f'/%3E%3C/svg%3E">
   <style>
@@ -445,6 +445,51 @@
       .character-section .source-card { grid-template-columns: 2.5rem 1fr; min-height: auto; }
       .gameplay-section .source-flow p, .combat-section .source-flow p { grid-template-columns: 2.5rem 1fr; }
     }
+
+    /* Ink, motion, and ceremonial five-element contrast. */
+    html, body { background: #292c2d; }
+    .topbar { background: rgba(31,34,35,.97); border-bottom: .2rem solid var(--fire); }
+    .folio { border-top: .55rem solid var(--fire); box-shadow: 0 2rem 6rem rgba(0,0,0,.34); }
+    .chapter { display: flex; align-items: center; gap: .75rem; }
+    .chapter::before {
+      content: "";
+      width: 2.3rem;
+      height: .22rem;
+      flex: 0 0 auto;
+      background: var(--fire);
+      transform: skewX(-24deg) rotate(-3deg);
+    }
+    .hero {
+      background:
+        radial-gradient(circle at 84% 18%, rgba(123,33,50,.12), transparent 24rem),
+        linear-gradient(90deg, var(--fire) 0 .72rem, #fff .72rem 100%);
+    }
+    .master-cover { border-top: .4rem solid var(--fire); border-bottom: .4rem solid #252c2e; }
+    .full-art-image, .duel-art-image { filter: contrast(1.06) saturate(.86); }
+    .element { transition: padding .25s ease, background .25s ease; }
+    .element:hover { padding-right: 1rem; padding-left: 1rem; background: rgba(123,33,50,.055); }
+    .world-section {
+      background:
+        linear-gradient(135deg, rgba(123,33,50,.065), transparent 34%),
+        #f3efe7;
+    }
+    .combat-section {
+      background:
+        radial-gradient(circle at 85% 18%, rgba(123,33,50,.4), transparent 24rem),
+        radial-gradient(circle at 8% 88%, rgba(83,117,138,.24), transparent 25rem),
+        #202526;
+    }
+    .end { background: #242829; border-top: .7rem solid var(--fire); }
+
+    @media (max-width: 650px) {
+      .folio { border-top-width: .35rem; }
+      .hero {
+        background:
+          radial-gradient(circle at 84% 18%, rgba(123,33,50,.1), transparent 19rem),
+          linear-gradient(90deg, var(--fire) 0 .38rem, #fff .38rem 100%);
+      }
+      .element:hover { padding-right: 0; padding-left: 0; }
+    }
   </style>
 </head>
 <body>
@@ -459,20 +504,20 @@
     <section class="section hero">
       <div class="hero-copy">
         <div><p class="chapter">Game &amp; Learning Design Case Study · Project 03</p><h1>Master of Elements</h1></div>
-        <div><p class="hero-intro">In this world full of elements, people have discovered a way to control them through a set of designed movements called the Elemental Dance. Through different Elemental Dances, people can attack, defend, and perform other actions.</p></div>
+        <div><p class="hero-intro">In this world, people have learned to control the elements through a series of movements called the Elemental Dance. By performing different Elemental Dances, people can attack, defend, and take other actions.</p></div>
       </div>
       <img class="hero-art master-cover" src="../assets/master-of-elements-cover.png" alt="Silhouette of an elemental dancer surrounded by sweeping red energy">
     </section>
 
     <section class="section source-copy world-section" id="world">
       <div class="world-layout">
-        <p class="world-intro">There are five types of elements that people can summon in this game: fire, water, earth, metal, and wood. According to ancient legends, the elements are controlled by the dancer’s emotions.</p>
+        <p class="world-intro">People can summon five elements in this game: fire, water, earth, metal, and wood. According to old legends, a dancer’s emotions control the elements.</p>
         <div class="trait-list">
-          <p>Straightforward and enthusiastic dancers easily control fire elementals.</p>
+          <p>Direct and energetic dancers easily control fire elementals.</p>
           <p>Gentle and thoughtful dancers easily control water elementals.</p>
-          <p>Staunch and introverted dancers easily control earth elementals.</p>
-          <p>Romantic and unrestrained dancers easily control wood elementals.</p>
-          <p>Upright and traditional dancers easily control metal elementals.</p>
+          <p>Steady and quiet dancers easily control earth elementals.</p>
+          <p>Romantic and free dancers easily control wood elementals.</p>
+          <p>Honest and traditional dancers easily control metal elementals.</p>
         </div>
         <div class="world-outro"><p>As a player, you will take on the role of a new student at the School of Elemental Dance, where everything is new and unknown. Will you find friendship and achieve your goal before your time at the school comes to an end?</p><p>We will see…</p></div>
       </div>
@@ -487,30 +532,30 @@
         <p>Answer the following questions about the school:</p>
       </div>
       <div class="source-questions">
-        <article class="source-card"><h3>Where is the school located?</h3><p>For example, is it on top of a floating island, secluded in a cave, or near the ocean?</p></article>
-        <article class="source-card"><h3>What is the school known for?</h3><p>For example, is it known for talented but ruthless students, or as a place reserved for only a select few?</p></article>
-        <article class="source-card"><h3>Who teaches at the school?</h3><p>For example, is the teacher a strict but forgiving master or a lighthearted instructor?</p></article>
+        <article class="source-card"><h3>Where is the school located?</h3><p>For example, is it on top of a floating island, hidden in a cave, or near the ocean?</p></article>
+        <article class="source-card"><h3>What is the school known for?</h3><p>For example, is it known for talented but harsh students, or is it open to only a small group?</p></article>
+        <article class="source-card"><h3>Who teaches at the school?</h3><p>For example, is the teacher a strict but forgiving master or a friendly guide?</p></article>
       </div>
     </section>
 
     <section class="section source-copy character-section" id="character">
-      <h2 class="display">Character Sheet Creation</h2>
+      <h2 class="display">Create Your Character</h2>
       <div class="source-points">
-        <article class="source-card"><p>Players need to create a name for their character.</p></article>
+        <article class="source-card"><p>Give your character a name.</p></article>
         <article class="source-card"><p>Choose one or two main elements for the character: fire, water, earth, metal, or wood.</p></article>
-        <article class="source-card"><p>Create your character’s backstory. Where do they come from? Are they a student who has traveled far to learn the dance, or simply a curious learner interested in it?</p></article>
+        <article class="source-card"><p>Create your character’s backstory. Where do they come from? Are they a student who has traveled far to learn the dance, or a curious learner who wants to understand it?</p></article>
         <article class="source-card"><p>Why does your character want to become an elemental dancer? For example, they may want to use the Elemental Dance to defeat their father’s killer, use an earth dance for gardening, or become a master of the elements and rule the world.</p></article>
         <article class="source-card"><p>Choose a goal for your character to achieve, such as making a new friend or winning an elemental competition.</p></article>
-        <article class="source-card"><p>What makes your character want to become an elemental dancer? Perhaps they want to become a cook, and a fire dance could help them control fire. Alternatively, a water dance could help them explore the ocean.</p></article>
-        <article class="source-card"><p>What traumatic moment has your character experienced? For example, they may have suffered a childhood accident that burned their face and left a scar, or they may have lost the ability to move their legs after an attack by another elemental dancer.</p></article>
+        <article class="source-card"><p>How could the Elemental Dance help your character? Perhaps they want to become a cook, and a fire dance could help them control fire. A water dance could help them explore the ocean.</p></article>
+        <article class="source-card"><p>What difficult or painful experience has your character faced? For example, a childhood accident may have burned their face and left a scar, or an attack by another elemental dancer may have caused them to lose the use of their legs.</p></article>
       </div>
       <div class="source-subsection">
-        <h3>Elemental Proficiency</h3>
-        <div class="source-prose"><p>If a player begins with only one main element, they start with two levels of proficiency in that element. If a player begins with two main elements, they start with one level of proficiency in each element.</p></div>
+        <h3>Element Skill Levels</h3>
+        <div class="source-prose"><p>If a player begins with one main element, they start at level two in that element. If a player begins with two main elements, they start at level one in each element.</p></div>
       </div>
       <div class="source-subsection">
         <h3>Elemental Dance</h3>
-        <div class="source-prose"><p>Each player may create their own Elemental Dances. If you cannot think of one, you may use the Elemental Dance chart as an example.</p></div>
+        <div class="source-prose"><p>You may create your own Elemental Dances. If you cannot think of one, you may use the Elemental Dance chart as a guide.</p></div>
       </div>
     </section>
 
@@ -523,13 +568,13 @@
       <div class="source-subsection">
         <h3>Learning Phase</h3>
         <div class="source-flow">
-          <p>The Learning Phase consists of four big turns. The player who most recently played a sport goes first.</p>
-          <p>The starting player chooses another player and creates a scenario involving both characters at the school. During each big turn, a special event takes place at the school. Players may choose to interact with one another during the setup of this event.</p>
-          <p>The active player may ask the other player to teach them one level of proficiency in any element that the other player knows. If the other player refuses, or if the active player decides not to ask, the active player may instead increase their proficiency in an element they already know.</p>
-          <p>Other players may join the conversation, just as they might in college. Feel free to participate when the characters are discussing something that interests you.</p>
-          <p>Continue until every player has completed their turn. This marks the end of one big turn.</p>
+          <p>The Learning Phase has four rounds. The player who most recently played a sport goes first.</p>
+          <p>The starting player chooses another player and creates a scene involving both characters at the school. During each round, a special event takes place. Players may choose to interact with one another as the event begins.</p>
+          <p>The active player may ask the other player to teach them an element that the other player knows. This increases the active player’s skill in that element by one level. If the other player refuses, or if the active player decides not to ask, the active player may instead increase their skill in an element they already know.</p>
+          <p>Other players may join the conversation when the characters discuss something that interests them.</p>
+          <p>Continue until every player has taken a turn. This ends the round.</p>
         </div>
-        <div class="source-example"><h3>Example Scenario</h3><p>The two of you meet on the dance field and introduce yourselves. You discover that you both love a movie starring the same actor. You are moved by the romantic emotions expressed in the film and ask the other player to teach you the wood dance. They agree and show you the dance.</p></div>
+        <div class="source-example"><h3>Example Scenario</h3><p>The two of you meet on the dance field and introduce yourselves. You discover that you both love a movie starring the same actor. You both connect with the love story in the film, so you ask the other player to teach you the wood dance. They agree and show you the dance.</p></div>
       </div>
 
       <div class="source-subsection">
@@ -539,11 +584,11 @@
     </section>
 
     <section class="section source-copy combat-section" id="duel">
-      <h2 class="display">Combat</h2>
+      <h2 class="display">Elemental Duel</h2>
       <div class="source-flow">
-        <p>The two players stand face-to-face with some distance between them. Both players begin the round at the same time and call out the elements they have summoned.</p>
-        <p>Each element has strengths and weaknesses, which are listed in the elemental table. If one player’s move is strong against the opponent’s move, that player wins the round.</p>
-        <p>However, if a player summons an element with a proficiency level that is two levels higher than the other player’s, the player with the higher proficiency wins the round, even if their element is normally weak against the opponent’s element.</p>
+        <p>The two players stand a short distance apart, facing each other. They begin the round at the same time and call out the elements they have summoned.</p>
+        <p>Each element has strengths and weaknesses, which are shown in the element chart. If one player’s move is strong against the opponent’s move, that player wins the round.</p>
+        <p>However, if one player’s skill level in an element is at least two levels higher than the other player’s level, the player with the higher skill wins the round, even if their element is normally weak against the opponent’s element.</p>
         <p>Both players then describe what happened during the round. A player receives one point for winning a round. The first player to reach three points wins the duel.</p>
       </div>
       <img class="duel-art duel-art-image" src="../assets/elemental-chart.png" alt="Element relationship chart showing fire, water, earth, wood, and metal">
@@ -552,10 +597,10 @@
     <section class="section source-copy festival-section">
       <h2 class="display">Festivals</h2>
       <div class="source-festivals">
-        <article class="source-card"><h3>Turn 1: Elemental Day</h3><p>A celebration of the discovery of the Elemental Dances. This day is traditionally spent making new friends, baking an elemental cake together, and enjoying the celebration.</p></article>
-        <article class="source-card"><h3>Turn 2: Arbor Day</h3><p>A celebration in which students go outside, plant trees, and protect the natural environment.</p></article>
-        <article class="source-card"><h3>Turn 3: Valentine’s Day</h3><p>A festival for showing love and appreciation to someone you care about.</p></article>
-        <article class="source-card"><h3>Turn 4: Spring Festival</h3><p>A festival for gathering together, playing with fireworks, and performing Elemental Dances for friends and family to welcome a fresh start to the new year.</p></article>
+        <article class="source-card"><h3>Turn 1: Elemental Day</h3><p>Elemental Day celebrates the discovery of the Elemental Dances. Students make new friends, bake an elemental cake together, and enjoy the day.</p></article>
+        <article class="source-card"><h3>Turn 2: Arbor Day</h3><p>On Arbor Day, students go outside, plant trees, and care for the natural world.</p></article>
+        <article class="source-card"><h3>Turn 3: Valentine’s Day</h3><p>On Valentine’s Day, students show someone that they care about them.</p></article>
+        <article class="source-card"><h3>Turn 4: Spring Festival</h3><p>During the Spring Festival, students gather, set off fireworks, and perform Elemental Dances for friends and family as they welcome the new year.</p></article>
       </div>
     </section>
 
